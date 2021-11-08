@@ -7,7 +7,5 @@ int main()
 	ChessGame game;
 	game.run();
 
-	std::cout << "FOO BAR" << std::endl;
-
 	return 0;
 }
