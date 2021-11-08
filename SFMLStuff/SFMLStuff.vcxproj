@@ -159,6 +159,7 @@
     <ClInclude Include="ChessBoard.h" />
     <ClInclude Include="ChessGame.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="King.h" />
     <ClInclude Include="Knight.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Piece.h" />
