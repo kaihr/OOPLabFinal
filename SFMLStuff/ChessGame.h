@@ -5,6 +5,11 @@
 #include "Constants.h"
 #include "ChessBoard.h"
 #include "Pawn.h"
+#include "King.h"
+#include "Bishop.h"
+#include "Rook.h"
+#include "Knight.h"
+#include "Queen.h"
 
 class ChessGame {
 private:

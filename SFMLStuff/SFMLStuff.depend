@@ -427,15 +427,20 @@
 
 1636430763 d:\21-22\th_oop\ooplabfinal\sfmlstuff\constants.h
 
-1636430763 source:d:\21-22\th_oop\ooplabfinal\sfmlstuff\chessgame.cpp
+1636434768 source:d:\21-22\th_oop\ooplabfinal\sfmlstuff\chessgame.cpp
 	<iostream>
 	"ChessGame.h"
 
-1636430763 d:\21-22\th_oop\ooplabfinal\sfmlstuff\chessgame.h
+1636435644 d:\21-22\th_oop\ooplabfinal\sfmlstuff\chessgame.h
 	<SFML/Graphics.hpp>
 	"Constants.h"
 	"ChessBoard.h"
 	"Pawn.h"
+	"King.h"
+	"Bishop.h"
+	"Rook.h"
+	"Knight.h"
+	"Queen.h"
 
 1636434116 d:\21-22\th_oop\ooplabfinal\sfmlstuff\pawn.h
 	<SFML/Graphics.hpp>
@@ -449,4 +454,29 @@
 
 1636430763 source:d:\21-22\th_oop\ooplabfinal\sfmlstuff\piece.cpp
 	"Piece.h"
+
+1636434768 d:\21-22\th_oop\ooplabfinal\sfmlstuff\king.h
+	<SFML/Graphics.hpp>
+	"Piece.h"
+	"Constants.h"
+
+1636435478 d:\21-22\th_oop\ooplabfinal\sfmlstuff\bishop.h
+	<SFML/Graphics.hpp>
+	"Piece.h"
+	"Constants.h"
+
+1636435469 d:\21-22\th_oop\ooplabfinal\sfmlstuff\rook.h
+	<SFML/Graphics.hpp>
+	"Piece.h"
+	"Constants.h"
+
+1636435587 d:\21-22\th_oop\ooplabfinal\sfmlstuff\knight.h
+	<SFML/Graphics.hpp>
+	"Piece.h"
+	"Constants.h"
+
+1636435788 d:\21-22\th_oop\ooplabfinal\sfmlstuff\queen.h
+	<SFML/Graphics.hpp>
+	"Piece.h"
+	"Constants.h"
 
