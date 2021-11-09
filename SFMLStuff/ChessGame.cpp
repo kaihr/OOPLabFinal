@@ -48,6 +48,7 @@ void ChessGame::handleInput()
 		if (currentChosen) {
 			currentChosen = currentChosen->handleInput(event, pieces);
 		}
+
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
 				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));
