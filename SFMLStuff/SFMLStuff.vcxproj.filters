@@ -47,10 +47,10 @@
     <ClInclude Include="ChessGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Knight.h">
+    <ClInclude Include="King.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="King.h">
+    <ClInclude Include="Knight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
