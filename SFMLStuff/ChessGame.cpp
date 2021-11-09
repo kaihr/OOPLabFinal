@@ -10,8 +10,8 @@ ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "C
 			pieces[i][j] = NULL;
 
 	for (int i = 0; i < 8; i++) {
-		pieces[0][i] = new Pawn(0, i);
-		pieces[1][i] = new Pawn(1, i);
+		pieces[0][i] = new Pawn(0, i, false);
+		pieces[1][i] = new Pawn(1, i, false);
 		pieces[6][i] = new Pawn(6, i);
 		pieces[7][i] = new Pawn(7, i);
 	}

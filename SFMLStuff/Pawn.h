@@ -13,14 +13,15 @@ public:
 		_row = row;
 		_col = col;
 		_isWhite = isWhite;
-		
+
 		if (_isWhite)
 			_texture.loadFromFile("Assets\\white_pawn.png");
 		else
 			_texture.loadFromFile("Assets\\black_pawn.png");
 
+
 		_sprite.setTexture(_texture);
-		
+
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 
