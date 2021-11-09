@@ -1,6 +1,6 @@
 #include "Piece.h"
 
-Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[8][8])
+Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
@@ -8,7 +8,9 @@ Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[8][8])
 			int nextRow = curCell.x;
 			int nextCol = curCell.y;
 
-			if (validCell(nextRow, nextCol, pieces)) {
+			bool isIn = (0 <= nextRow && nextRow < BOARD_SIZE && 0 <= nextCol && nextCol < BOARD_SIZE);
+
+			if (isIn && validCell(nextRow, nextCol, pieces)) {
 				if (pieces[nextRow][nextCol]) {
 					delete pieces[nextRow][nextCol];
 					pieces[nextRow][nextCol] = NULL;
@@ -19,10 +21,10 @@ Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[8][8])
 
 				_row = nextRow;
 				_col = nextCol;
-				_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
-
-				return NULL;
 			}
+
+			_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
+			return NULL;
 		}
 	}
 
@@ -35,3 +37,4 @@ Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[8][8])
 
 	return this;
 }
+
