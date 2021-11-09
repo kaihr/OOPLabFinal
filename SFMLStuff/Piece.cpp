@@ -9,8 +9,9 @@ Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOAR
 			int nextCol = curCell.y;
 
 			bool isIn = (0 <= nextRow && nextRow < BOARD_SIZE && 0 <= nextCol && nextCol < BOARD_SIZE);
+			bool isSame = (nextRow == _row && nextCol == _col);
 
-			if (isIn && validCell(nextRow, nextCol, pieces)) {
+			if ((!isSame) && isIn && validCell(nextRow, nextCol, pieces)) {
 				if (pieces[nextRow][nextCol]) {
 					delete pieces[nextRow][nextCol];
 					pieces[nextRow][nextCol] = NULL;
