@@ -29,5 +29,3 @@ public:
 		return (nextRow == _row) || (nextCol == _col);
 	}
 };
-
-

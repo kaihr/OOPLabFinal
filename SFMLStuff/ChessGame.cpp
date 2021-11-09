@@ -83,6 +83,6 @@ void ChessGame::run()
 	while (window.isOpen())
 	{
 		handleInput();
-		draw();
+        draw();
 	}
 }
