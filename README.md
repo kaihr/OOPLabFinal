@@ -50,7 +50,7 @@ Dùng để lưu các trạng thái của trò chơi. Bao gồm các thuộc tí
 Class này sẽ bao gồm một số hàm chức năng như sau:
 
 - `void handelInput():` Xử lý tương tác với người dùng.
-
+- `void draw()`: Vẽ toàn bộ các thông tin của trò chơi lên màn hình.
 - `bool isCheckMate()`: Được gọi mỗi khi người chơi thực hiện một nước đi hợp lệ, kiểm tra xem nước đi vừa rồi có chiếu bí đối phương hay không.
 - `bool isStaleMate():` Kiểm tra trường hợp hết nước đi (hòa).
 
