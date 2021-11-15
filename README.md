@@ -38,11 +38,24 @@ Class này sẽ bao gồm một số hàm chức năng như sau:
 
 - `void update()`: Được gọi ở mỗi khung hình, cập nhật trạng thái của đồng hồ.
 
+### Record
+
+Lưu lại lịch sự trận đấu. Gồm các thuộc tính:
+
+- `int nTurns`: Lưu lại số lượt đi đến thời điểm hiện tại.
+- `string *history`: Một mảng gồm các xâu để ghi lại thông tin các nước đi.
+
+Class này gồm một số hàm chức năng:
+
+- `addMoves(string str)`: Thêm nước đi `str` vào lịch sử trận đấu.
+- `saveToFile(str path)`: Lưu lịch sự trận đấu vào tập tin.
+
 ### ChessGame
 
 Dùng để lưu các trạng thái của trò chơi. Bao gồm các thuộc tính sau:
 
 - `Piece *_pieces[8][8]`: Dùng để lưu trạng thái của bàn cờ, `pieces[i][j]` trỏ đến quân cờ được đặt ở hàng `i`, cột `j`. Trong trường hợp ô này rỗng thì trỏ về `NULL`.
+- `Record record`: Lịch sự của trận đấu hiện tại.
 - `bool _isWhiteTurn`: Dùng để cho biết lượt hiện tại là của người đi quân trắng hay người đi quân đen.
 - `Timer _timer[2]`: Dùng để lưu thời gian còn lại của người đi quân trắng và người đi quân đen.
 - `int _score[2]`: Dùng để lưu trữ điểm số của 2 người chơi (Tổng giá trị các quân ăn được).
