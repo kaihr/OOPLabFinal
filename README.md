@@ -27,6 +27,10 @@ Class này sẽ bao gồm các hàm chức năng sau:
 
 Các lớp cho các quân cờ khác như `Pawn, Knight, Rook, Bishop, Queen` và `King` sẽ kế thừa từ lớp `Piece` và nạp chồng hàm `validCell()`.
 
+<img src="Piece.png">
+
+
+
 ### Timer
 
 Dùng để lưu trữ thông tin về thời gian còn lại của người chơi. Bao gồm các thuộc tính sau:
