@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Piece.h"
 
 Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])

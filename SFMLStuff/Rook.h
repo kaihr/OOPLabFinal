@@ -26,6 +26,33 @@ public:
 	}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {
-		return (nextRow == _row) || (nextCol == _col);
+		if (!(nextRow == _row || nextCol == _col))
+			return false;
+		
+		int diff = 1;
+		if (_col > nextCol)
+			diff = -1;
+
+		for (int i = _col; i != nextCol; i += diff) {
+			if (i == _col)
+				continue;
+
+			if (pieces[_row][i])
+				return false;
+		}
+
+		diff = 1;
+		if (_row > nextRow)
+			diff = -1;
+
+		for (int i = _row; i != nextRow; i += diff) {
+			if (i == _row)
+				continue;
+
+			if (pieces[i][_col])
+				return false;
+		}
+
+		return true;
 	}
 };
