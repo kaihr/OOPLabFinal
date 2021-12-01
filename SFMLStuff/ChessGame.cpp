@@ -1,9 +1,9 @@
-#include <iostream>
 #include "ChessGame.h"
+
+#include <iostream>
 
 ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "Chess")
 {
-	board.loadTileSet("Assets\\tileset.png");
 	_isWhiteTurn = true;
 
 	for (int i = 0; i < 8; i++)
@@ -47,9 +47,11 @@ void ChessGame::handleInput()
 			window.close();
 
 		if (currentChosen) {
+			Piece* pre = currentChosen;
 			currentChosen = currentChosen->handleInput(event, pieces);
-			if (!currentChosen)
-                _isWhiteTurn ^= 1;
+			
+			if(pre != currentChosen)
+				_isWhiteTurn ^= 1;
 		}
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
@@ -86,6 +88,6 @@ void ChessGame::run()
 	while (window.isOpen())
 	{
 		handleInput();
-        draw();
+		draw();
 	}
 }
