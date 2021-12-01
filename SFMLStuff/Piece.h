@@ -13,8 +13,7 @@ protected:
 	bool _hasMoved; //For castling and pawn movement
 
 	sf::Sprite _sprite;
-protected:
-	bool isWhite();
+
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
@@ -22,13 +21,14 @@ private:
 		target.draw(_sprite, states);
 	}
 
-
 public:
 	Piece(int row = 0, int col = 0, bool isWhite = true) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false) {}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {	return true;	}
 
 	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
+
+	bool isWhite();
 
 	void moveWithMouse(const sf::Window &window)
 	{
