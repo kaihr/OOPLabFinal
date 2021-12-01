@@ -52,11 +52,10 @@ void ChessGame::handleInput()
 			window.close();
 
 		if (currentChosen) {
-			Piece* pre = currentChosen;
 			currentChosen = currentChosen->handleInput(event, pieces);
 			if (!currentChosen){
 				_time[_isWhiteTurn].stop();
-                _isWhiteTurn ^= 1;
+				_isWhiteTurn ^= 1;
 				_time[_isWhiteTurn].start();
 			}
 
