@@ -24,13 +24,13 @@ private:
 public:
 	Piece(int row = 0, int col = 0, bool isWhite = true) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false) {}
 
+	bool isWhite() { return _isWhite; };
+
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) { return true; }
 
 	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
-	bool isWhite();
-
-	void moveWithMouse(const sf::Window& window)
+	void moveWithMouse(const sf::Window &window)
 	{
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		mousePos.x -= CELL_LENGTH / 2;

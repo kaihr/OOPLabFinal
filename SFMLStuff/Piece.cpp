@@ -2,11 +2,6 @@
 
 #include "Piece.h"
 
-bool Piece::isWhite()
-{
-	return (this->_isWhite == 1);
-}
-
 Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
 	if (event.type == sf::Event::MouseButtonPressed) {
