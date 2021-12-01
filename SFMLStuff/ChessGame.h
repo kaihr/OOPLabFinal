@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "Timer.h"
 #include "Constants.h"
 #include "ChessBoard.h"
 #include "Pawn.h"
@@ -18,7 +19,7 @@ private:
 	Piece* currentChosen;
 	sf::RenderWindow window;
 	bool _isWhiteTurn;
-	//Timer _time[2];
+	Timer _time[2];
 	int _score[2];
 
 public:
