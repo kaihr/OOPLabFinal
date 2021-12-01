@@ -1,10 +1,9 @@
 #include "ChessBoard.h"
+#include "TextureManager.h"
 
-bool ChessBoard::loadTileSet(const std::string& tileSetPath)
+ChessBoard::ChessBoard()
 {
-	if (!_tileSet.loadFromFile(tileSetPath))
-		return false;
-
+	_tileSet.loadFromFile("Assets\\tileset.png");
 	_verticesArray.setPrimitiveType(sf::PrimitiveType::Quads);
 	_verticesArray.resize(8 * 8 * 4);
 
@@ -26,6 +25,4 @@ bool ChessBoard::loadTileSet(const std::string& tileSetPath)
 			currentQuad[3].texCoords = sf::Vector2f(parity * CELL_LENGTH, CELL_LENGTH);
 		}
 	}
-
-	return true;
 }
