@@ -20,6 +20,9 @@ private:
 	}
 
 public:
+
+	bool isWhite();
+
 	Piece(int row = 0, int col = 0) : _row(row), _col(col), _selected(false), _isWhite(false), _isAlive(true) {}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {	return true;	}
