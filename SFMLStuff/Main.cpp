@@ -1,6 +1,11 @@
 #include <SFML/Graphics.hpp>
-#include <iostream>
+
 #include "ChessGame.h"
+#include "TextureManager.h"
+
+#include <iostream>
+
+TextureManager *TextureManager::instance = NULL;
 
 int main()
 {
