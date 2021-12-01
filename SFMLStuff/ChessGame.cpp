@@ -4,6 +4,7 @@
 ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "Chess")
 {
 	board.loadTileSet("Assets\\tileset.png");
+	_isWhiteTurn = true;
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -47,12 +48,14 @@ void ChessGame::handleInput()
 
 		if (currentChosen) {
 			currentChosen = currentChosen->handleInput(event, pieces);
+			if (!currentChosen)
+                _isWhiteTurn ^= 1;
 		}
 
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
 				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));
-				if (pieces[cell.x][cell.y])
+				if (pieces[cell.x][cell.y] && pieces[cell.x][cell.y]->isWhite() == _isWhiteTurn)
 					currentChosen = pieces[cell.x][cell.y];
 			}
 		}

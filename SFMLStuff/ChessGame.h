@@ -17,6 +17,9 @@ private:
 	Piece* pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* currentChosen;
 	sf::RenderWindow window;
+	bool _isWhiteTurn;
+	//Timer _time[2];
+	int _score[2];
 
 public:
 	ChessGame();
