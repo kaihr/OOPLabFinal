@@ -3,30 +3,31 @@
 
 #include "Piece.h"
 #include "Constants.h"
+#include "TextureManager.h"
 
 class Pawn : public Piece {
 private:
+	int _positiveDirection;
+
 	sf::Texture _texture;
+
 public:
-	Pawn(int row = 0, int col = 0, bool isWhite = true)
-	{
-		_row = row;
-		_col = col;
-		_isWhite = isWhite;
+	Pawn(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	{	
+		_positiveDirection = -1; // White piece move from the bottom row to the top row
+		if (!isWhite)
+			_positiveDirection = 1;
 
 		if (_isWhite)
-			_texture.loadFromFile("Assets\\white_pawn.png");
+			_texture = TextureManager::getTexture(PIECES::WHITE_PAWN);
 		else
-			_texture.loadFromFile("Assets\\black_pawn.png");
-
+			_texture = TextureManager::getTexture(PIECES::BLACK_PAWN);
 
 		_sprite.setTexture(_texture);
-
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 
-	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]	)
-	{
-		return (nextRow == _row) || (nextCol == _col);
-	}
+	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
+
+	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 };

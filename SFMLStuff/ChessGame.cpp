@@ -51,7 +51,6 @@ void ChessGame::handleInput()
 			if (!currentChosen)
                 _isWhiteTurn ^= 1;
 		}
-
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
 				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));

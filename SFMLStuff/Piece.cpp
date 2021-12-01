@@ -29,6 +29,7 @@ Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOAR
 
 				_row = nextRow;
 				_col = nextCol;
+				_hasMoved = true;
 			}
 
 			_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
