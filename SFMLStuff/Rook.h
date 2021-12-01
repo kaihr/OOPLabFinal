@@ -7,20 +7,14 @@ class Rook : public Piece {
 private:
 	sf::Texture _texture;
 public:
-	Rook(int row = 0, int col = 0, bool isWhite = true)
+	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
 	{
-		_row = row;
-		_col = col;
-		_isWhite = isWhite;
-
 		if (_isWhite)
-			_texture.loadFromFile("Assets\\white_rook.png");
+			_texture = TextureManager::getTexture(WHITE_ROOK);
 		else
-			_texture.loadFromFile("Assets\\black_rook.png");
-
+			_texture = TextureManager::getTexture(BLACK_ROOK);
 
 		_sprite.setTexture(_texture);
-
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 

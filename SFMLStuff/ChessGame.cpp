@@ -60,7 +60,6 @@ void ChessGame::handleInput()
 			}
 
 		}
-
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
 				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));
