@@ -31,6 +31,8 @@ public:
 			instance->_arr[BLACK_PAWN].loadFromFile("Assets\\black_pawn.png");
 			instance->_arr[BLACK_QUEEN].loadFromFile("Assets\\black_queen.png");
 			instance->_arr[BLACK_ROOK].loadFromFile("Assets\\black_rook.png");
+
+			instance->_arr[TILE_SET].loadFromFile("Assets\\tileset.png");
 		}
 
 		return instance;

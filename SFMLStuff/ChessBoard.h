@@ -12,7 +12,7 @@ private:
 	sf::VertexArray _verticesArray;
 
 public:
-	bool loadTileSet(const std::string& tileSetPath);
+	ChessBoard();
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const 
