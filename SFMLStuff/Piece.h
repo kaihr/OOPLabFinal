@@ -13,8 +13,10 @@ protected:
 	bool _hasMoved; //For castling and pawn movement
 
 	sf::Sprite _sprite;
-protected:
+
+public:
 	bool isWhite();
+
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
