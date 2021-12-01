@@ -20,6 +20,14 @@ public:
 	}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) {
-		return nextRow != _row && nextCol != _col && abs(nextRow - _row) + abs(nextCol - _col) == 3;
+		if (!(nextRow != _row && nextCol != _col && abs(nextRow - _row) + abs(nextCol - _col) == 3))
+			return false;
+		if (pieces[nextRow][nextCol])
+		{
+			if (pieces[nextRow][nextCol]->isWhite() == this->_isWhite)
+			{
+				return false;
+			}
+		}
 	}
 };

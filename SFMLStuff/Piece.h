@@ -15,7 +15,10 @@ protected:
 	sf::Sprite _sprite;
 
 public:
-	bool isWhite();
+	bool isWhite()
+	{
+		return _isWhite;
+	}
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -27,8 +30,6 @@ private:
 
 public:
 	Piece(int row = 0, int col = 0, bool isWhite = true) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false) {}
-
-	bool isWhite() { return _isWhite; };
 
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) { return true; }
 

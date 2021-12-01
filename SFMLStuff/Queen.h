@@ -20,6 +20,8 @@ public:
 	}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {
+		if (_col == nextCol && _row == nextRow)
+			return false;
 		if (!(nextRow == _row || nextCol == _col || abs(nextRow - _row) == abs(nextCol - _col)))
 			return false;
 		if (nextRow > _row)

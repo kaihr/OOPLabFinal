@@ -3,11 +3,11 @@
 #include <iostream>
 
 bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) {
+	if (_col == nextCol && _row == nextRow)
+		return false;
 	if (_col == nextCol && _row + _positiveDirection == nextRow) {
 		if (!pieces[nextRow][nextCol])
 			return true;
-
-		return false;
 	}
 
 	if (_col == nextCol && _row + 2 * _positiveDirection == nextRow) {
