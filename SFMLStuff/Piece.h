@@ -28,9 +28,7 @@ public:
 
 	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
-	bool isWhite();
-
-	void moveWithMouse(const sf::Window& window)
+	void moveWithMouse(const sf::Window &window)
 	{
 		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 		mousePos.x -= CELL_LENGTH / 2;
