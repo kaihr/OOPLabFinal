@@ -1,10 +1,10 @@
-#include <iostream>
 #include "ChessGame.h"
 #include "Timer.h"
 
+#include <iostream>
+
 ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "Chess")
 {
-	board.loadTileSet("Assets\\tileset.png");
 	_isWhiteTurn = true;
 
 	_time[0].setTimer(FullTime(0, 5, 0));
@@ -53,12 +53,13 @@ void ChessGame::handleInput()
 
 		if (currentChosen) {
 			currentChosen = currentChosen->handleInput(event, pieces);
+
 			if (!currentChosen){
 				_time[_isWhiteTurn].stop();
-                _isWhiteTurn ^= 1;
+        _isWhiteTurn ^= 1;
 				_time[_isWhiteTurn].start();
 			}
-
+      
 		}
 		else if (!currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
@@ -98,6 +99,6 @@ void ChessGame::run()
 		FullTime t = _time[_isWhiteTurn].getRemainingTime();
 		std::cout << t._hours << ':' << t._minutes << ':' << t._seconds << ':' << t._miliseconds << "    \r";
 		handleInput();
-        draw();
+		draw();
 	}
 }
