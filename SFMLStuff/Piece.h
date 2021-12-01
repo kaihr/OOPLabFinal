@@ -23,6 +23,7 @@ private:
 
 public:
 	Piece(int row = 0, int col = 0, bool isWhite = true) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false) {}
+	bool isWhite();
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {	return true;	}
 

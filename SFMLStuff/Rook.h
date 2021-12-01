@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-
 #include "Piece.h"
 #include "Constants.h"
 
@@ -46,7 +45,13 @@ public:
 			if (pieces[i][_col])
 				return false;
 		}
-
+		if (pieces[nextRow][nextCol])
+		{
+			if (pieces[nextRow][nextCol]->isWhite() == this->_isWhite)
+			{
+				return false;
+			}
+		}
 		return true;
 	}
 };
