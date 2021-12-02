@@ -3,25 +3,29 @@
 #include <iostream>
 
 bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) {
-	if (_col == nextCol && _row == nextRow)
-		return false;
-	if (_col == nextCol && _row + _positiveDirection == nextRow) {
-		if (!pieces[nextRow][nextCol])
+	if (nextRow == _row + this->_positiveDirection)
+	{
+		if ((nextCol == _col + 1 ) || (nextCol == _col - 1))
+		{
+			if (pieces[nextRow][nextCol]->isWhite() != this->_isWhite)
+			{
+				this->_hasMoved = 1;
+				return true;
+			}
+		}
+		else
+		{
+			if (nextCol == _col)
+				if (!pieces[nextRow][nextCol])
+				{
+					this->_hasMoved = 1;
+					return true;
+				}
+		}
+	}	
+	if (nextRow == _row + 2 * this->_positiveDirection)
+		if (this->_hasMoved == 0)
 			return true;
-	}
-
-	if (_col == nextCol && _row + 2 * _positiveDirection == nextRow) {
-		if (!pieces[nextRow][nextCol] && !_hasMoved)
-			return true;
-		return false;
-	}
-
-	if (_row + _positiveDirection == nextRow && (_col - 1 == nextCol || _col + 1 == nextCol)) {
-		if (pieces[nextRow][nextCol])
-			return true;
-		return false;
-	}
-
 	return false;
 }
 

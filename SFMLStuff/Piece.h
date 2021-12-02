@@ -10,7 +10,7 @@ protected:
 	bool _selected;
 	bool _isWhite;
 	bool _isAlive;
-	bool _hasMoved; //For castling and pawn movement
+	bool _hasMoved = 0; //For castling and pawn movement
 
 	sf::Sprite _sprite;
 
