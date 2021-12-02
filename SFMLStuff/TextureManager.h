@@ -38,7 +38,7 @@ public:
 		return instance;
 	}
 
-	static sf::Texture getTexture(PIECES id) {
+	static sf::Texture& getTexture(PIECES id) {
 		return getInstance()->_arr[id];
 	}
 };

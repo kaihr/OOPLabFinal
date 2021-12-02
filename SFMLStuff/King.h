@@ -11,11 +11,10 @@ public:
 	King(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
 	{
 		if (_isWhite)
-			_texture = TextureManager::getTexture(WHITE_KING);
+			_sprite.setTexture(TextureManager::getTexture(WHITE_KING));
 		else
-			_texture = TextureManager::getTexture(BLACK_KING);
+			_sprite.setTexture(TextureManager::getTexture(BLACK_KING));
 
-		_sprite.setTexture(_texture);
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 
