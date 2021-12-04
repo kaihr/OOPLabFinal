@@ -1,9 +1,7 @@
 #include "ChessBoard.h"
-#include "TextureManager.h"
 
 ChessBoard::ChessBoard()
 {
-	_tileSet.loadFromFile("Assets\\tileset.png");
 	_verticesArray.setPrimitiveType(sf::PrimitiveType::Quads);
 	_verticesArray.resize(8 * 8 * 4);
 

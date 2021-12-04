@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "Chess")
+ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), "Chess")
 {
 	_isWhiteTurn = true;
 
@@ -13,58 +13,58 @@ ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "C
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			pieces[i][j] = NULL;
+			_pieces[i][j] = NULL;
 
 	for (int i = 0; i < 8; i++) {
-		pieces[1][i] = new Pawn(1, i, false);
-		pieces[6][i] = new Pawn(6, i);
+		_pieces[1][i] = new Pawn(1, i, false);
+		_pieces[6][i] = new Pawn(6, i);
 	}
 
-	pieces[0][0] = new Rook(0, 0, false);
-	pieces[0][7] = new Rook(0, 7, false);
-	pieces[7][0] = new Rook(7, 0);
-	pieces[7][7] = new Rook(7, 7);
+	_pieces[0][0] = new Rook(0, 0, false);
+	_pieces[0][7] = new Rook(0, 7, false);
+	_pieces[7][0] = new Rook(7, 0);
+	_pieces[7][7] = new Rook(7, 7);
 
-	pieces[0][1] = new Knight(0, 1, false);
-	pieces[0][6] = new Knight(0, 6, false);
-	pieces[7][1] = new Knight(7, 1);
-	pieces[7][6] = new Knight(7, 6);
+	_pieces[0][1] = new Knight(0, 1, false);
+	_pieces[0][6] = new Knight(0, 6, false);
+	_pieces[7][1] = new Knight(7, 1);
+	_pieces[7][6] = new Knight(7, 6);
 
-	pieces[0][2] = new Bishop(0, 2, false);
-	pieces[0][5] = new Bishop(0, 5, false);
-	pieces[7][2] = new Bishop(7, 2);
-	pieces[7][5] = new Bishop(7, 5);
+	_pieces[0][2] = new Bishop(0, 2, false);
+	_pieces[0][5] = new Bishop(0, 5, false);
+	_pieces[7][2] = new Bishop(7, 2);
+	_pieces[7][5] = new Bishop(7, 5);
 
-	pieces[0][3] = new Queen(0, 3, false);
-	pieces[7][3] = new Queen(7, 3);
+	_pieces[0][3] = new Queen(0, 3, false);
+	_pieces[7][3] = new Queen(7, 3);
 
-	pieces[0][4] = new King(0, 4, false);
-	pieces[7][4] = new King(7, 4);
+	_pieces[0][4] = new King(0, 4, false);
+	_pieces[7][4] = new King(7, 4);
 }
 
 void ChessGame::handleInput()
 {
 	sf::Event event;
 
-	while (window.pollEvent(event))
+	while (_window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
-			window.close();
+			_window.close();
 
-		if (currentChosen) {
-			currentChosen = currentChosen->handleInput(event, pieces);
-			if (!currentChosen){
+		if (_currentChosen) {
+			_currentChosen = _currentChosen->handleInput(event, _pieces);
+			if (!_currentChosen){
 				_time[_isWhiteTurn].stop();
 				_isWhiteTurn ^= 1;
 				_time[_isWhiteTurn].start();
 			}
 
 		}
-		else if (!currentChosen) {
+		else if (!_currentChosen) {
 			if (event.type == sf::Event::MouseButtonPressed) {
-				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));
-				if (pieces[cell.x][cell.y] && pieces[cell.x][cell.y]->isWhite() == _isWhiteTurn)
-					currentChosen = pieces[cell.x][cell.y];
+				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(_window));
+				if (_pieces[cell.x][cell.y] && _pieces[cell.x][cell.y]->isWhite() == _isWhiteTurn)
+					_currentChosen = _pieces[cell.x][cell.y];
 			}
 		}
 	}
@@ -72,27 +72,27 @@ void ChessGame::handleInput()
 
 void ChessGame::draw()
 {
-	window.clear();
+	_window.clear();
 
-	window.draw(board);
+	_window.draw(_board);
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			if (pieces[i][j] && (currentChosen != pieces[i][j]))
-				window.draw(*pieces[i][j]);
+			if (_pieces[i][j] && (_currentChosen != _pieces[i][j]))
+				_window.draw(*_pieces[i][j]);
 
-	if (currentChosen) {
-		currentChosen->moveWithMouse(window);
-		window.draw(*currentChosen);
+	if (_currentChosen) {
+		_currentChosen->moveWithMouse(_window);
+		_window.draw(*_currentChosen);
 	}
 
-	window.display();
+	_window.display();
 }
 
 void ChessGame::run()
 {
-	std::cout << window.isOpen() << std::endl;
-	while (window.isOpen())
+	std::cout << _window.isOpen() << std::endl;
+	while (_window.isOpen())
 	{
 		_time[_isWhiteTurn].update();
 		FullTime t = _time[_isWhiteTurn].getRemainingTime();

@@ -6,7 +6,6 @@ using namespace std::chrono;
 #define time std::chrono::time_point<std::chrono::high_resolution_clock>
 
 struct FullTime {
-
 	int _hours;
 	int _minutes;
 	int _seconds;
