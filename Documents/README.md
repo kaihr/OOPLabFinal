@@ -7,6 +7,7 @@ Cài đặt một trò chơi cờ vua. Hỗ trợ một số tính năng cơ b�
 - Tổ chức một ván cờ vua theo luật tiêu chuẩn.
 - Tính giờ lượt của người chơi.
 - Ghi lại, lưu và tải một trận đấu.
+- Điều chỉnh thông số trò chơi.
 
 ## Thư viện ngoài (External library)
 
