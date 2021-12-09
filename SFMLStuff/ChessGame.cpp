@@ -1,5 +1,7 @@
 #include "ChessGame.h"
 #include "Timer.h"
+#include "NullState.h"
+#include "MovingState.h"
 
 #include <iostream>
 
@@ -40,6 +42,10 @@ ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), 
 
 	_pieces[0][4] = new King(0, 4, false);
 	_pieces[7][4] = new King(7, 4);
+
+	_score[0] = _score[1] = 0;
+
+	_mouseState = new NullState();
 }
 
 void ChessGame::handleInput()
@@ -51,21 +57,14 @@ void ChessGame::handleInput()
 		if (event.type == sf::Event::Closed)
 			_window.close();
 
-		if (_currentChosen) {
-			_currentChosen = _currentChosen->handleInput(event, _pieces);
-			if (!_currentChosen){
-				_time[_isWhiteTurn].stop();
-				_isWhiteTurn ^= 1;
-				_time[_isWhiteTurn].start();
-			}
-
-		}
-		else if (!_currentChosen) {
-			if (event.type == sf::Event::MouseButtonPressed) {
-				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(_window));
-				if (_pieces[cell.x][cell.y] && _pieces[cell.x][cell.y]->isWhite() == _isWhiteTurn)
-					_currentChosen = _pieces[cell.x][cell.y];
-			}
+		GameState *tmp = _mouseState->handleInput(event, *this);
+		if (tmp) {
+			std::cout << "SEND HELP WTF" << std::endl;
+			_mouseState->quit(*this);
+			delete _mouseState;
+			
+			_mouseState = tmp;
+			_mouseState->entry(*this);
 		}
 	}
 }
@@ -73,7 +72,6 @@ void ChessGame::handleInput()
 void ChessGame::draw()
 {
 	_window.clear();
-
 	_window.draw(_board);
 
 	for (int i = 0; i < 8; i++)
@@ -81,12 +79,18 @@ void ChessGame::draw()
 			if (_pieces[i][j] && (_currentChosen != _pieces[i][j]))
 				_window.draw(*_pieces[i][j]);
 
-	if (_currentChosen) {
-		_currentChosen->moveWithMouse(_window);
+	if (_currentChosen)
 		_window.draw(*_currentChosen);
-	}
+
+	FullTime fullTime = _time[_isWhiteTurn].getRemainingTime();
+	// std::cout << fullTime._hours << "h " << fullTime._minutes << "m " << fullTime._seconds << "s" << std::endl;
 
 	_window.display();
+}
+
+void ChessGame::update() {
+	_mouseState->update(*this);
+	_time[_isWhiteTurn].update();
 }
 
 void ChessGame::run()
@@ -94,10 +98,8 @@ void ChessGame::run()
 	std::cout << _window.isOpen() << std::endl;
 	while (_window.isOpen())
 	{
-		_time[_isWhiteTurn].update();
-		FullTime t = _time[_isWhiteTurn].getRemainingTime();
-		std::cout << t._hours << ':' << t._minutes << ':' << t._seconds << ':' << t._miliseconds << "    \r";
 		handleInput();
+		update();
 		draw();
 	}
 }

@@ -12,6 +12,8 @@
 #include "Knight.h"
 #include "Queen.h"
 
+class GameState;
+
 class ChessGame {
 private:
 	ChessBoard _board;
@@ -21,17 +23,25 @@ private:
 	bool _isWhiteTurn;
 	Timer _time[2];
 	int _score[2];
+	GameState* _mouseState;
 
 public:
+	friend class GameState;
+	friend class NullState;
+	friend class MovingState;
+
 	ChessGame();
 	~ChessGame()
 	{
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
 				delete _pieces[i][j];
+
+		delete _mouseState;
 	}
 
 	void handleInput();
+	void update();
 	void draw();
 	void run();
 };

@@ -21,4 +21,7 @@ private:
 		states.texture = &TextureManager::getTexture(TILE_SET);
 		target.draw(_verticesArray, states);
 	}
+
+public:
+	void highlightCell(Piece* chosen, bool hightlight, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 };

@@ -28,7 +28,8 @@ public:
 
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) { return true; }
 
-	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
+	// This might be deprecated, idk
+	// virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
 	void moveWithMouse(const sf::Window &window)
 	{
@@ -38,4 +39,14 @@ public:
 
 		_sprite.setPosition(sf::Vector2f(mousePos));
 	}
+
+public:
+	void setPos(int row = -1, int col = -1) {
+		if (Utility::inBoard(row, col)) {
+			_row = row;
+			_col = col;
+		}
+
+		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH); 
+	};
 };
