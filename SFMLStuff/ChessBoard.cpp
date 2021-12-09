@@ -41,7 +41,7 @@ void ChessBoard::highlightCell(Piece* chosen, bool hightlight, Piece *pieces[BOA
 
 			if (hightlight && chosen->validCell(row, col, pieces)) {
 				if ((!pieces[row][col] || pieces[row][col]->isWhite() != chosen->isWhite()))
-					parity = 2;
+					parity += 2;
 			}
 
 			currentQuad[0].texCoords = sf::Vector2f(parity * CELL_LENGTH, 0);
