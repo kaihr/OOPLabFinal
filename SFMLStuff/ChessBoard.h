@@ -18,7 +18,7 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const 
 	{
 		states.transform *= getTransform();
-		states.texture = &TextureManager::getTexture(TILE_SET);
+		states.texture = &TextureManager::getTexture(PIECES::TILE_SET);
 		target.draw(_verticesArray, states);
 	}
 

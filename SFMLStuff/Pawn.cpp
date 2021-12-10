@@ -11,7 +11,7 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 	}
 
 	if (_col == nextCol && _row + 2 * _positiveDirection == nextRow) {
-		if (!pieces[nextRow][nextCol] && !_hasMoved)
+		if (!pieces[nextRow - _positiveDirection][nextCol] && !pieces[nextRow][nextCol] && !_hasMoved)
 			return true;
 		return false;
 	}
