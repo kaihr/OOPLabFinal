@@ -2,6 +2,7 @@
 #include "Timer.h"
 #include "NullState.h"
 #include "MovingState.h"
+#include "MenuState.h"
 
 #include <iostream>
 
@@ -45,7 +46,7 @@ ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), 
 
 	_score[0] = _score[1] = 0;
 
-	_mouseState = new NullState();
+	_mouseState = new MenuState();
 }
 
 void ChessGame::handleInput()
@@ -59,7 +60,6 @@ void ChessGame::handleInput()
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
 		if (tmp) {
-			std::cout << "SEND HELP WTF" << std::endl;
 			_mouseState->quit(*this);
 			delete _mouseState;
 			
@@ -71,21 +71,7 @@ void ChessGame::handleInput()
 
 void ChessGame::draw()
 {
-	_window.clear();
-	_window.draw(_board);
-
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			if (_pieces[i][j] && (_currentChosen != _pieces[i][j]))
-				_window.draw(*_pieces[i][j]);
-
-	if (_currentChosen)
-		_window.draw(*_currentChosen);
-
-	FullTime fullTime = _time[_isWhiteTurn].getRemainingTime();
-	// std::cout << fullTime._hours << "h " << fullTime._minutes << "m " << fullTime._seconds << "s" << std::endl;
-
-	_window.display();
+	_mouseState->draw(*this);
 }
 
 void ChessGame::update() {

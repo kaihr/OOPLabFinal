@@ -6,12 +6,12 @@
 
 class Knight : public Piece {
 public:
-	Knight(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	Knight(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::KNIGHT)
 	{
 		if (_isWhite)
-			_sprite.setTexture(TextureManager::getTexture(WHITE_KNIGHT));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_KNIGHT));
 		else
-			_sprite.setTexture(TextureManager::getTexture(BLACK_KNIGHT));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::BLACK_KNIGHT));
 
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}

@@ -30,6 +30,8 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 			owner._isWhiteTurn ^= 1;
 			owner._time[owner._isWhiteTurn].start();
 
+			owner._currentChosen->markAsMoved();
+
 			return new NullState();
 		}
 
