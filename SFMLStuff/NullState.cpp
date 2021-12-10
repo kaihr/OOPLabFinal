@@ -1,8 +1,14 @@
 #include "NullState.h"
 #include "MovingState.h"
+#include "MenuState.h"
 
 GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Escape)
+			return new MenuState();
+	}
+
 	if (event.type == sf::Event::MouseButtonPressed) {
 		sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(owner._window));
 

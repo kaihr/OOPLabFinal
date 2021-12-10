@@ -3,6 +3,8 @@
 
 #include "Utility.h"
 
+#include <iostream>
+
 class Piece : public sf::Drawable, public sf::Transformable
 {
 protected:
