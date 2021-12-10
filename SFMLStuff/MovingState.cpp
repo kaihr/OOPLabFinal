@@ -47,7 +47,7 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 
 void MovingState::entry(ChessGame& owner)
 {
-	std::cout << "FUCKFUCKFUCK" << std::endl;
+	//std::cout << "FUCKFUCKFUCK" << std::endl;
 	owner._board.highlightCell(owner._currentChosen, true, owner._pieces);
 }
 
