@@ -14,7 +14,7 @@ void GameState::draw(ChessGame& game)
 		game._window.draw(*game._currentChosen);
 
 	FullTime fullTime = game._time[game._isWhiteTurn].getRemainingTime();
-	// std::cout << fullTime._hours << "h " << fullTime._minutes << "m " << fullTime._seconds << "s" << std::endl;
+	std::cout << fullTime._hours << "h " << fullTime._minutes << "m " << fullTime._seconds << "s" << std::endl;
 
 	game._window.display();
 }

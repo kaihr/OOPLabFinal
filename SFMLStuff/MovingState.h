@@ -3,7 +3,7 @@
 #include "NullState.h"
 
 class MovingState : public GameState {
-private:
+protected:
 	int _row, _col;
 
 public:

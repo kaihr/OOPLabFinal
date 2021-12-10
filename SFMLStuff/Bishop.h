@@ -6,12 +6,12 @@
 
 class Bishop : public Piece {
 public:
-	Bishop(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	Bishop(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::BISHOP)
 	{
 		if (_isWhite)
-			_sprite.setTexture(TextureManager::getTexture(WHITE_BISHOP));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_BISHOP));
 		else
-			_sprite.setTexture(TextureManager::getTexture(BLACK_BISHOP));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::BLACK_BISHOP));
 
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}

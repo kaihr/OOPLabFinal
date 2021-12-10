@@ -5,12 +5,12 @@
 
 class Rook : public Piece {
 public:
-	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::ROOK)
 	{
 		if (_isWhite)
-			_sprite.setTexture(TextureManager::getTexture(WHITE_ROOK));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_ROOK));
 		else
-			_sprite.setTexture(TextureManager::getTexture(BLACK_ROOK));
+			_sprite.setTexture(TextureManager::getTexture(PIECES::BLACK_ROOK));
 
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
