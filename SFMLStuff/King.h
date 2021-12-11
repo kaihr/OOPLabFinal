@@ -19,6 +19,48 @@ public:
 	}
 
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {
-		return abs(nextRow - _row) <= 1 && abs(nextCol - _col) <= 1;
+		// Castling queen side
+		if (!_hasMoved && _row == nextRow && nextCol == _col - 2) {
+			if ((pieces[_row][0]
+				&& !pieces[_row][0]->hasMoved())
+				&& !pieces[_row][_col - 1] && !pieces[_row][_col - 2]) {
+				return true;
+			}
+		}
+
+		// Castling king side
+		if (!_hasMoved && _row == nextRow && nextCol == _col + 2) {
+			if ((pieces[_row][7]
+				&& !pieces[_row][7]->hasMoved())
+				&& !pieces[_row][_col + 1]
+				&& !pieces[_row][_col + 2]) {
+				return true;
+			}
+		}
+
+		if (!(abs(nextRow - _row) <= 1 && abs(nextCol - _col) <= 1))
+			return false;
+
+		for (int i = 0; i < BOARD_SIZE; ++i)
+			for (int j = 0; j < BOARD_SIZE; ++j) {
+				if (i == nextRow && j == nextCol)
+					continue;
+
+				if (!pieces[i][j])
+					continue;
+
+				if (pieces[i][j]->isWhite() == _isWhite)
+					continue;
+
+				if (pieces[i][j]->type() != Piece::Type::KING) {
+					if(pieces[i][j]->validCell(nextRow, nextCol, pieces))
+						return false;
+				}
+				else if (abs(i - nextRow) <= 1 && abs(j - nextCol) <= 1) {
+						return false;
+				}
+			}
+
+		return true;
 	}
 };

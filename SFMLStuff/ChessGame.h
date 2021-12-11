@@ -29,6 +29,8 @@ public:
 	friend class GameState;
 	friend class NullState;
 	friend class MovingState;
+	friend class MovingKingState;
+	friend class MovingPawnState;
 	friend class MenuState;
 
 	ChessGame();
