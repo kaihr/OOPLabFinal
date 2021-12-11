@@ -4,11 +4,11 @@
 
 #include "Piece.h"
 #include "Constants.h"
+#include "TextureManager.h"
 
 class ChessBoard : public sf::Drawable, public sf::Transformable 
 {
 private:
-	sf::Texture _tileSet;
 	sf::VertexArray _verticesArray;
 
 public:
@@ -18,7 +18,10 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const 
 	{
 		states.transform *= getTransform();
-		states.texture = &_tileSet;
+		states.texture = &TextureManager::getTexture(PIECES::TILE_SET);
 		target.draw(_verticesArray, states);
 	}
+
+public:
+	void highlightCell(Piece* chosen, bool hightlight, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 };

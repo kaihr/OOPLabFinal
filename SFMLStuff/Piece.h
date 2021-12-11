@@ -3,14 +3,27 @@
 
 #include "Utility.h"
 
+#include <iostream>
+
 class Piece : public sf::Drawable, public sf::Transformable
 {
+public:
+	enum class Type {
+		PAWN,
+		ROOK,
+		BISHOP,
+		KNIGHT,
+		QUEEN,
+		KING
+	};
+
 protected:
 	int _row, _col;
 	bool _selected;
 	bool _isWhite;
 	bool _isAlive;
-	bool _hasMoved; //For castling and pawn movement
+	int _hasMoved; //For castling and pawn movement
+	Type _type;
 
 	sf::Sprite _sprite;
 
@@ -22,13 +35,14 @@ private:
 	}
 
 public:
-	Piece(int row = 0, int col = 0, bool isWhite = true) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false) {}
+	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false), _type(type) {}
 
 	bool isWhite() { return _isWhite; };
 
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) { return true; }
 
-	virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
+	// This might be deprecated, idk
+	// virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
 	void moveWithMouse(const sf::Window &window)
 	{
@@ -38,4 +52,20 @@ public:
 
 		_sprite.setPosition(sf::Vector2f(mousePos));
 	}
+
+public:
+	void setPos(int row = -1, int col = -1) {
+		if (Utility::inBoard(row, col)) {
+			_row = row;
+			_col = col;
+		}
+
+		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH); 
+	};
+
+public:
+	int hasMoved() { return _hasMoved; };
+	void markAsMoved() { ++_hasMoved; };
+
+	Type type() { return _type; };
 };

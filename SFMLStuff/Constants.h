@@ -9,7 +9,7 @@ const int BISHOP_SCORE = 3;
 const int ROOK_SCORE = 5;
 const int QUEEN_SCORE = 9;
 
-enum PIECES {
+enum class PIECES {
 	WHITE_PAWN,
 	WHITE_ROOK,
 	WHITE_BISHOP,

@@ -368,4 +368,4 @@ FodyWeavers.xsd
 # Codeblock
 *.cbp
 *.depend
-SFMLStuff.sln
+*.sln

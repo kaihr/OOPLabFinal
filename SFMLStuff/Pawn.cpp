@@ -11,7 +11,7 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 	}
 
 	if (_col == nextCol && _row + 2 * _positiveDirection == nextRow) {
-		if (!pieces[nextRow][nextCol] && !_hasMoved)
+		if (!pieces[nextRow - _positiveDirection][nextCol] && !pieces[nextRow][nextCol] && !_hasMoved)
 			return true;
 		return false;
 	}
@@ -25,9 +25,11 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 	return false;
 }
 
+/*
 Piece* Pawn::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
 	// TO-DO: En Passant
 
 	return Piece::handleInput(event, pieces);
 }
+*/

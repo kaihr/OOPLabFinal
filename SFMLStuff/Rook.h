@@ -4,17 +4,14 @@
 #include "Constants.h"
 
 class Rook : public Piece {
-private:
-	sf::Texture _texture;
 public:
-	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::ROOK)
 	{
 		if (_isWhite)
-			_texture = TextureManager::getTexture(WHITE_ROOK);
+			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_ROOK));
 		else
-			_texture = TextureManager::getTexture(BLACK_ROOK);
+			_sprite.setTexture(TextureManager::getTexture(PIECES::BLACK_ROOK));
 
-		_sprite.setTexture(_texture);
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 

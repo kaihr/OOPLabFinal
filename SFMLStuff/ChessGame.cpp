@@ -1,9 +1,12 @@
 #include "ChessGame.h"
 #include "Timer.h"
+#include "NullState.h"
+#include "MovingState.h"
+#include "MenuState.h"
 
 #include <iostream>
 
-ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "Chess")
+ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), "Chess")
 {
 	_isWhiteTurn = true;
 
@@ -13,91 +16,76 @@ ChessGame::ChessGame() : currentChosen(NULL), window(sf::VideoMode(800, 600), "C
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
-			pieces[i][j] = NULL;
+			_pieces[i][j] = NULL;
 
 	for (int i = 0; i < 8; i++) {
-		pieces[1][i] = new Pawn(1, i, false);
-		pieces[6][i] = new Pawn(6, i);
+		_pieces[1][i] = new Pawn(1, i, false);
+		_pieces[6][i] = new Pawn(6, i);
 	}
 
-	pieces[0][0] = new Rook(0, 0, false);
-	pieces[0][7] = new Rook(0, 7, false);
-	pieces[7][0] = new Rook(7, 0);
-	pieces[7][7] = new Rook(7, 7);
+	_pieces[0][0] = new Rook(0, 0, false);
+	_pieces[0][7] = new Rook(0, 7, false);
+	_pieces[7][0] = new Rook(7, 0);
+	_pieces[7][7] = new Rook(7, 7);
 
-	pieces[0][1] = new Knight(0, 1, false);
-	pieces[0][6] = new Knight(0, 6, false);
-	pieces[7][1] = new Knight(7, 1);
-	pieces[7][6] = new Knight(7, 6);
+	_pieces[0][1] = new Knight(0, 1, false);
+	_pieces[0][6] = new Knight(0, 6, false);
+	_pieces[7][1] = new Knight(7, 1);
+	_pieces[7][6] = new Knight(7, 6);
 
-	pieces[0][2] = new Bishop(0, 2, false);
-	pieces[0][5] = new Bishop(0, 5, false);
-	pieces[7][2] = new Bishop(7, 2);
-	pieces[7][5] = new Bishop(7, 5);
+	_pieces[0][2] = new Bishop(0, 2, false);
+	_pieces[0][5] = new Bishop(0, 5, false);
+	_pieces[7][2] = new Bishop(7, 2);
+	_pieces[7][5] = new Bishop(7, 5);
 
-	pieces[0][3] = new Queen(0, 3, false);
-	pieces[7][3] = new Queen(7, 3);
+	_pieces[0][3] = new Queen(0, 3, false);
+	_pieces[7][3] = new Queen(7, 3);
 
-	pieces[0][4] = new King(0, 4, false);
-	pieces[7][4] = new King(7, 4);
+	_pieces[0][4] = new King(0, 4, false);
+	_pieces[7][4] = new King(7, 4);
+
+	_score[0] = _score[1] = 0;
+
+	_mouseState = new MenuState(*this);
 }
 
 void ChessGame::handleInput()
 {
 	sf::Event event;
 
-	while (window.pollEvent(event))
+	while (_window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
-			window.close();
+			_window.close();
 
-		if (currentChosen) {
-			currentChosen = currentChosen->handleInput(event, pieces);
-			if (!currentChosen){
-				_time[_isWhiteTurn].stop();
-				_isWhiteTurn ^= 1;
-				_time[_isWhiteTurn].start();
-			}
+		GameState *tmp = _mouseState->handleInput(event, *this);
+		if (tmp) {
+			_mouseState->quit(*this);
+			delete _mouseState;
 
-		}
-		else if (!currentChosen) {
-			if (event.type == sf::Event::MouseButtonPressed) {
-				sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(window));
-				if (pieces[cell.x][cell.y] && pieces[cell.x][cell.y]->isWhite() == _isWhiteTurn)
-					currentChosen = pieces[cell.x][cell.y];
-			}
+			_mouseState = tmp;
+			_mouseState->entry(*this);
 		}
 	}
 }
 
 void ChessGame::draw()
 {
-	window.clear();
+	_mouseState->draw(*this);
+}
 
-	window.draw(board);
-
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
-			if (pieces[i][j] && (currentChosen != pieces[i][j]))
-				window.draw(*pieces[i][j]);
-
-	if (currentChosen) {
-		currentChosen->moveWithMouse(window);
-		window.draw(*currentChosen);
-	}
-
-	window.display();
+void ChessGame::update() {
+	_mouseState->update(*this);
+	_time[_isWhiteTurn].update();
 }
 
 void ChessGame::run()
 {
-	std::cout << window.isOpen() << std::endl;
-	while (window.isOpen())
+	std::cout << _window.isOpen() << std::endl;
+	while (_window.isOpen())
 	{
-		_time[_isWhiteTurn].update();
-		FullTime t = _time[_isWhiteTurn].getRemainingTime();
-		std::cout << t._hours << ':' << t._minutes << ':' << t._seconds << ':' << t._miliseconds << "    \r";
 		handleInput();
+		update();
 		draw();
 	}
 }
