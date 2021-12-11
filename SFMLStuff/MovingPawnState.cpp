@@ -2,5 +2,5 @@
 
 GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner)
 {
-	return NULL;
+	return MovingState::handleInput(event, owner);
 }
