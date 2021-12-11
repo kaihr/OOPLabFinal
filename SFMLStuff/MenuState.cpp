@@ -13,8 +13,8 @@ const float MENU_OPTION_PADDING_LEFT = 100;
 bool isMouseOnRect(float position, sf::Vector2i mousePos){
 	return mousePos.y >= position &&
 			mousePos.y <= position + MENU_OPTION_HEIGHT &&
-			mousePos.x >= MENU_OPTION_PADDING_LEFT &&
-			mousePos.x <= MENU_OPTION_PADDING_LEFT + MENU_OPTION_WIDTH;
+			mousePos.x >= MENU_OPTION_PADDING_LEFT - 25 &&
+			mousePos.x <= MENU_OPTION_PADDING_LEFT + MENU_OPTION_WIDTH - 25;
 }
 
 void MenuState::drawMenuOption(std::string s, float position, ChessGame& owner){
@@ -52,15 +52,6 @@ void MenuState::draw(ChessGame& owner)
 	texture.loadFromFile("Assets\\menu_background.jpg");
 	sf::Sprite bg(texture);
 	owner._window.draw(bg);
-
-	/*
-	for (int i = 1; i <= 4; i++){
-		rect.setSize(sf::Vector2f(200, 70));
-		rect.setFillColor(rectColor1);
-		rect.setPosition(sf::Vector2f(75, i * 100));
-		owner._window.draw(rect);
-	}
-	*/
 
 	drawMenuOption("Start", 100, owner);
 	drawMenuOption("Load", 200, owner);
