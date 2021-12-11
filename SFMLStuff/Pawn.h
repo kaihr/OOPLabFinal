@@ -27,4 +27,13 @@ public:
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
 	// virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
+public:
+	int enPassant()
+	{
+		if (_isWhite && _row == 3)
+			return _row;
+		if (!_isWhite && _row == 4)
+			return _row;
+		return 0;
+	}
 };
