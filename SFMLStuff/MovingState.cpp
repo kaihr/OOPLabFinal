@@ -32,6 +32,8 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 
 			owner._currentChosen->markAsMoved();
 
+			owner._preChosen = owner._currentChosen;
+
 			return new NullState();
 		}
 
