@@ -8,7 +8,7 @@ GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Escape)
-			return new MenuState();
+			return new MenuState(owner);
 	}
 
 	if (event.type == sf::Event::MouseButtonPressed) {
