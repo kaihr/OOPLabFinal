@@ -21,4 +21,9 @@ public:
 	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {
 		return abs(nextRow - _row) <= 1 && abs(nextCol - _col) <= 1;
 	}
+public:
+	int enPassant()
+	{
+		return 0;
+	}
 };

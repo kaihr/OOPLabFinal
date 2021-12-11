@@ -20,7 +20,15 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 		if (owner._currentChosen->validCell(cell.x, cell.y, owner._pieces)) {
 			if (owner._pieces[cell.x][cell.y])
 				delete owner._pieces[cell.x][cell.y];
-
+			else
+			{
+				int check = owner._currentChosen->enPassant();
+				if (check)
+				{
+					delete owner._pieces[check][cell.y];
+					owner._pieces[check][cell.y] = NULL;
+				}
+			}
 			owner._pieces[_row][_col] = NULL;
 			owner._pieces[cell.x][cell.y] = owner._currentChosen;
 

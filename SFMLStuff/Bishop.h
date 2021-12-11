@@ -84,5 +84,10 @@ public:
 		}
 		return true;
 	}
+public:
+	int enPassant()
+	{
+		return 0;
+	}
 };
 
