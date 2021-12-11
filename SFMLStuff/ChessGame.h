@@ -19,6 +19,7 @@ private:
 	ChessBoard _board;
 	Piece* _pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* _currentChosen;
+	Piece* _preChosen;
 	sf::RenderWindow _window;
 	bool _isWhiteTurn;
 	Timer _time[2];
