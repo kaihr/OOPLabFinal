@@ -32,6 +32,7 @@ public:
 	friend class MovingKingState;
 	friend class MovingPawnState;
 	friend class MenuState;
+	friend class MenuOption;
 
 	ChessGame();
 	~ChessGame()

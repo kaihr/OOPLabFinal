@@ -46,7 +46,7 @@ ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), 
 
 	_score[0] = _score[1] = 0;
 
-	_mouseState = new MenuState();
+	_mouseState = new MenuState(*this);
 }
 
 void ChessGame::handleInput()
@@ -62,7 +62,7 @@ void ChessGame::handleInput()
 		if (tmp) {
 			_mouseState->quit(*this);
 			delete _mouseState;
-			
+
 			_mouseState = tmp;
 			_mouseState->entry(*this);
 		}
