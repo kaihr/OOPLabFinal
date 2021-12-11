@@ -23,7 +23,7 @@ public:
 		if (!_hasMoved && _row == nextRow && nextCol == _col - 2) {
 			if ((pieces[_row][0]
 				&& !pieces[_row][0]->hasMoved())
-				&& !pieces[_row][_col - 1] && !pieces[_row][_col - 2] && !pieces[_row][_col - 2]) {
+				&& !pieces[_row][_col - 1] && !pieces[_row][_col - 2] && !pieces[_row][_col - 3]) {
 				return true;
 			}
 		}
