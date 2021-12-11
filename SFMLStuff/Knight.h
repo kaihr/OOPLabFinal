@@ -19,9 +19,4 @@ public:
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) {
 		return nextRow != _row && nextCol != _col && (abs(nextRow - _row) + abs(nextCol - _col) == 3);
 	}
-public:
-	int enPassant()
-	{
-		return 0;
-	}
 };

@@ -16,8 +16,7 @@ public:
 		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	}
 
-	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) 
-	{
+	virtual bool validCell(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]) {
 		if (!(nextRow == _row || nextCol == _col || abs(nextRow - _row) == abs(nextCol - _col)))
 			return false;
 		if (nextRow > _row)
@@ -113,11 +112,6 @@ public:
 			}
 		}
 		return true;
-	}
-public:
-	int enPassant()
-	{
-		return 0;
 	}
 };
 

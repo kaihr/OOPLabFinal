@@ -20,23 +20,17 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 			return true;
 		if (_isWhite && _row == 3)
 		{
-			if (pieces[3][nextCol] && pieces[3][nextCol]->isWhite() != _isWhite && pieces[3][nextCol]->hasMoved() == 1)
-			{
+			if (pieces[3][nextCol] && pieces[3][nextCol]->isWhite() != _isWhite)
 				return true;
-
-			}
 		}
 		if (!_isWhite && _row == 4)
 		{
-			if (pieces[4][nextCol] && pieces[4][nextCol]->isWhite() != _isWhite && pieces[4][nextCol]->hasMoved() == 1)
-			{
+			if (pieces[4][nextCol] && pieces[4][nextCol]->isWhite() != _isWhite)
 				return true;
-			}
 		}
 	}
 	return false;
 }
-
 
 /*
 Piece* Pawn::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])

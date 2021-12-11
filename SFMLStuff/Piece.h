@@ -65,8 +65,6 @@ public:
 
 public:
 	int hasMoved() { return _hasMoved; };
-	virtual int enPassant() = 0;
-	// ham enPassant kiem tra xem co dang dung o vi tri thich hop de bat tot qua duong khong
 	void markAsMoved() { ++_hasMoved; };
 
 	Type type() { return _type; };
