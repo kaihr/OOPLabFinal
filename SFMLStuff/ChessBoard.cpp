@@ -39,7 +39,7 @@ void ChessBoard::highlightCell(Piece* chosen, bool hightlight, Piece *pieces[BOA
 
 			int parity = (row + col) % 2;
 
-			if (hightlight && chosen->validCell(row, col, pieces)) {
+			if (hightlight && chosen->validAndNotInCheck(row, col, pieces)) {
 				if ((!pieces[row][col] || pieces[row][col]->isWhite() != chosen->isWhite()))
 					parity += 2;
 			}

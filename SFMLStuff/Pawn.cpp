@@ -20,15 +20,22 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 			return true;
 		if (_isWhite && _row == 3)
 		{
-			if (pieces[3][nextCol] && pieces[3][nextCol]->isWhite() != _isWhite && pieces[3][nextCol]->enPassant())
+			if (pieces[3][nextCol]
+				&& pieces[3][nextCol]->isWhite() != _isWhite
+				&& pieces[3][nextCol]->enPassant()) {
 				return true;
+			}
 		}
 		if (!_isWhite && _row == 4)
 		{
-			if (pieces[4][nextCol] && pieces[4][nextCol]->isWhite() != _isWhite && pieces[4][nextCol]->enPassant())
+			if (pieces[4][nextCol]
+				&& pieces[4][nextCol]->isWhite() != _isWhite
+				&& pieces[4][nextCol]->enPassant()) {
 				return true;
+			}
 		}
 	}
+	
 	return false;
 }
 

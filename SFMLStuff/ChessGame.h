@@ -27,6 +27,13 @@ private:
 	GameState* _mouseState;
 
 public:
+	enum class TERMINATE_CODE {
+		EXISTS_VALID_MOVE,
+		CHECK_MATE,
+		STALE_MATE,
+	};
+
+public:
 	friend class GameState;
 	friend class NullState;
 	friend class MovingState;
@@ -34,6 +41,8 @@ public:
 	friend class MovingPawnState;
 	friend class MenuState;
 	friend class MenuOption;
+	friend class TerminateState;
+	friend class PromotionState;
 
 	ChessGame();
 	~ChessGame()
@@ -48,5 +57,9 @@ public:
 	void handleInput();
 	void update();
 	void draw();
+	void switchState(GameState *newState);
 	void run();
+
+	TERMINATE_CODE outOfMove();
+	// bool staleMate();
 };

@@ -73,4 +73,8 @@ public:
 	void switchEnPassant() { _enPassant ^= 1; };
 
 	Type type() { return _type; };
+
+public:
+	bool putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
+	virtual bool validAndNotInCheck(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 };

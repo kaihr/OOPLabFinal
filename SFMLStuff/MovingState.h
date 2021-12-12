@@ -17,5 +17,4 @@ public:
 	void rejectMove(ChessGame& owner);
 
 	GameState* handleInput(const sf::Event& event, ChessGame& owner);
-
 };

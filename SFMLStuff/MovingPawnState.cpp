@@ -1,4 +1,5 @@
 #include "MovingPawnState.h"
+#include "PromotionState.h"
 
 GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner)
 {
@@ -35,7 +36,7 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 			if (!owner._pieces[cell.x][cell.y]
 				&& cell.y == _col
 				&& cell.x == _row + 2 * _positiveDirection
-				&& owner._currentChosen->validCell(cell.x, cell.y, owner._pieces)) {
+				&& owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces)) {
 
 				owner._pieces[_row][_col] = NULL;
 				owner._pieces[cell.x][cell.y] = owner._currentChosen;
@@ -46,6 +47,17 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				return new NullState();
 			}
 
+			if ((cell.x == 0 || cell.x == 7)
+				&& (owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces))) {
+				if (owner._pieces[cell.x][cell.y])
+					delete owner._pieces[cell.x][cell.y];
+
+				owner._pieces[_row][_col] = NULL;
+				owner._pieces[cell.x][cell.y] = owner._currentChosen;
+				owner._currentChosen->setPos(cell.x, cell.y);
+
+				return new PromotionState(cell.x, cell.y);
+			}
 		}
 	}
 
