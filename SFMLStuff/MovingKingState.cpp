@@ -24,12 +24,7 @@ GameState* MovingKingState::handleInput(const sf::Event& event, ChessGame& owner
 				owner._pieces[cell.x][0] = NULL;
 			}
 
-			owner._time[owner._isWhiteTurn].stop();
-			owner._isWhiteTurn ^= 1;
-			owner._time[owner._isWhiteTurn].start();
-
-			owner._currentChosen->markAsMoved();
-
+			acceptMove(owner);
 			return new NullState();
 		}
 	}

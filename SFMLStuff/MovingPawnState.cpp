@@ -6,6 +6,7 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 		sf::Vector2i cell = Utility::getCell(sf::Mouse::getPosition(owner._window));
 	
 		if (Utility::inBoard(cell.x, cell.y)) {
+
 			if (!owner._pieces[cell.x][cell.y]
 				&& (cell.x == _row + _positiveDirection)
 				&& (cell.y == _col + 1 || cell.y == _col - 1)) {
@@ -23,20 +24,28 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 					owner._pieces[cell.x][cell.y] = owner._currentChosen;
 					owner._currentChosen->setPos(cell.x, cell.y);
 
-					owner._time[owner._isWhiteTurn].stop();
-					owner._isWhiteTurn ^= 1;
-					owner._time[owner._isWhiteTurn].start();
-
-					owner._currentChosen->markAsMoved();
-					
-					owner._preChosen = owner._currentChosen;
-
+					acceptMove(owner);
 					return new NullState();
 				}
 
-				owner._currentChosen->setPos();
+				rejectMove(owner);
 				return new NullState();
 			}
+
+			if (!owner._pieces[cell.x][cell.y]
+				&& cell.y == _col
+				&& cell.x == _row + 2 * _positiveDirection
+				&& owner._currentChosen->validCell(cell.x, cell.y, owner._pieces)) {
+
+				owner._pieces[_row][_col] = NULL;
+				owner._pieces[cell.x][cell.y] = owner._currentChosen;
+				owner._currentChosen->setPos(cell.x, cell.y);
+
+				acceptMove(owner);
+				owner._preChosen->switchEnPassant();
+				return new NullState();
+			}
+
 		}
 	}
 

@@ -23,26 +23,18 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 
 			owner._pieces[_row][_col] = NULL;
 			owner._pieces[cell.x][cell.y] = owner._currentChosen;
-
 			owner._currentChosen->setPos(cell.x, cell.y);
 			
-			owner._time[owner._isWhiteTurn].stop();
-			owner._isWhiteTurn ^= 1;
-			owner._time[owner._isWhiteTurn].start();
-
-			owner._currentChosen->markAsMoved();
-
-			owner._preChosen = owner._currentChosen;
-
+			acceptMove(owner);
 			return new NullState();
 		}
 
-		owner._currentChosen->setPos();
+		rejectMove(owner);
 		return new NullState();
 	}
 
 	if (event.type == sf::Event::KeyPressed) {
-		owner._currentChosen->setPos();
+		rejectMove(owner);
 		return new NullState();
 	}
 
@@ -64,4 +56,35 @@ void MovingState::update(ChessGame& owner)
 {
 	assert(owner._currentChosen);
 	owner._currentChosen->moveWithMouse(owner._window);
+}
+
+/*
+Stop clock
+Swith turn
+Start clock
+Mark current piece as moved
+Update en passant state of previous piece
+Update privious piece
+ */
+void MovingState::acceptMove(ChessGame& owner)
+{
+	owner._time[owner._isWhiteTurn].stop();
+	owner._isWhiteTurn ^= 1;
+	owner._time[owner._isWhiteTurn].start();
+
+	owner._currentChosen->markAsMoved();
+
+	if (owner._preChosen && owner._preChosen->type() == Piece::Type::PAWN && owner._preChosen->enPassant())
+		owner._preChosen->switchEnPassant();
+
+	owner._preChosen = owner._currentChosen;
+}
+
+/*
+Invalid move
+Clean up and reset piece position
+*/
+void MovingState::rejectMove(ChessGame &owner)
+{
+	owner._currentChosen->setPos(_row, _col);
 }
