@@ -3,10 +3,11 @@
 #include "NullState.h"
 #include "MovingState.h"
 #include "MenuState.h"
+#include "TerminateState.h"
 
 #include <iostream>
 
-ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), "Chess")
+ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::VideoMode(800, 600), "Chess")
 {
 	_isWhiteTurn = true;
 
@@ -51,6 +52,17 @@ ChessGame::ChessGame() : _currentChosen(NULL), _window(sf::VideoMode(800, 600), 
 
 void ChessGame::handleInput()
 {
+	TERMINATE_CODE code = outOfMove();
+	if (code == TERMINATE_CODE::CHECK_MATE) {
+		std::cout << "Chech met^' bruh" << std::endl;
+		switchState(new TerminateState());
+	}
+
+	if (code == TERMINATE_CODE::STALE_MATE) {
+		std::cout << "Xi tel met^' bruh" << std::endl;
+		switchState(new TerminateState());
+	}
+
 	sf::Event event;
 
 	while (_window.pollEvent(event))
@@ -59,19 +71,23 @@ void ChessGame::handleInput()
 			_window.close();
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
-		if (tmp) {
-			_mouseState->quit(*this);
-			delete _mouseState;
-
-			_mouseState = tmp;
-			_mouseState->entry(*this);
-		}
+		if (tmp)
+			switchState(tmp);
 	}
 }
 
 void ChessGame::draw()
 {
 	_mouseState->draw(*this);
+}
+
+void ChessGame::switchState(GameState* newState)
+{
+	_mouseState->quit(*this);
+	delete _mouseState;
+
+	_mouseState = newState;
+	_mouseState->entry(*this);
 }
 
 void ChessGame::update() {
@@ -88,4 +104,48 @@ void ChessGame::run()
 		update();
 		draw();
 	}
+}
+
+ChessGame::TERMINATE_CODE ChessGame::outOfMove()
+{
+	bool noValidMove = true;
+
+	int kingRow = -1;
+	int kingCol = -1;
+
+	for(int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++) {
+			if (!_pieces[i][j])
+				continue;
+
+			if (_pieces[i][j]->isWhite() != _isWhiteTurn)
+				continue;
+
+			if (_pieces[i][j]->type() == Piece::Type::KING) {
+				kingRow = i;
+				kingCol = j;
+			}
+
+			for (int k = 0; k < BOARD_SIZE; k++)
+				for (int l = 0; l < BOARD_SIZE; l++) {
+					if (_pieces[k][l] && _pieces[k][l]->isWhite() == _isWhiteTurn)
+						continue;
+
+					if (_pieces[i][j]->validAndNotInCheck(k, l, _pieces))
+						return TERMINATE_CODE::EXISTS_VALID_MOVE;
+				}
+		}
+
+	for(int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++) {
+			if (_pieces[i][j]
+				&& _pieces[i][j]->isWhite() != _isWhiteTurn
+				&& _pieces[i][j]->validAndNotInCheck(kingRow, kingCol, _pieces)) {
+
+				return TERMINATE_CODE::CHECK_MATE;
+			}
+		}
+		
+
+	return TERMINATE_CODE::STALE_MATE;
 }

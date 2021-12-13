@@ -22,6 +22,7 @@ protected:
 	bool _selected;
 	bool _isWhite;
 	bool _isAlive;
+	bool _enPassant;
 	int _hasMoved; //For castling and pawn movement
 	Type _type;
 
@@ -35,7 +36,8 @@ private:
 	}
 
 public:
-	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) : _row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false), _type(type) {}
+	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) : 
+		_row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false), _type(type), _enPassant(false) {}
 
 	bool isWhite() { return _isWhite; };
 
@@ -64,8 +66,15 @@ public:
 	};
 
 public:
+	bool enPassant() { return _enPassant; };
 	int hasMoved() { return _hasMoved; };
+
 	void markAsMoved() { ++_hasMoved; };
+	void switchEnPassant() { _enPassant ^= 1; };
 
 	Type type() { return _type; };
+
+public:
+	bool putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
+	virtual bool validAndNotInCheck(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 };

@@ -19,11 +19,19 @@ private:
 	ChessBoard _board;
 	Piece* _pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* _currentChosen;
+	Piece* _preChosen;
 	sf::RenderWindow _window;
 	bool _isWhiteTurn;
 	Timer _time[2];
 	int _score[2];
 	GameState* _mouseState;
+
+public:
+	enum class TERMINATE_CODE {
+		EXISTS_VALID_MOVE,
+		CHECK_MATE,
+		STALE_MATE,
+	};
 
 public:
 	friend class GameState;
@@ -33,6 +41,8 @@ public:
 	friend class MovingPawnState;
 	friend class MenuState;
 	friend class MenuOption;
+	friend class TerminateState;
+	friend class PromotionState;
 
 	ChessGame();
 	~ChessGame()
@@ -47,5 +57,9 @@ public:
 	void handleInput();
 	void update();
 	void draw();
+	void switchState(GameState *newState);
 	void run();
+
+	TERMINATE_CODE outOfMove();
+	// bool staleMate();
 };
