@@ -19,6 +19,7 @@ private:
 	ChessBoard _board;
 	Piece* _pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* _currentChosen;
+	Piece* _preChosen;
 	sf::RenderWindow _window;
 	bool _isWhiteTurn;
 	Timer _time[2];
@@ -29,7 +30,10 @@ public:
 	friend class GameState;
 	friend class NullState;
 	friend class MovingState;
+	friend class MovingKingState;
+	friend class MovingPawnState;
 	friend class MenuState;
+	friend class MenuOption;
 
 	ChessGame();
 	~ChessGame()

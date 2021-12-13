@@ -8,7 +8,7 @@ GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Escape)
-			return new MenuState();
+			return new MenuState(owner);
 	}
 
 	if (event.type == sf::Event::MouseButtonPressed) {
@@ -24,7 +24,7 @@ GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 				return new MovingKingState(cell.x, cell.y);
 
 			if (owner._currentChosen->type() == Piece::Type::PAWN)
-				return new MovingPawnState(cell.x, cell.y);
+				return new MovingPawnState(cell.x, cell.y, owner._isWhiteTurn);
 
 			return new MovingState(cell.x, cell.y);
 		}
