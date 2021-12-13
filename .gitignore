@@ -369,6 +369,7 @@ FodyWeavers.xsd
 *.cbp
 *.depend
 *.sln
+*.layout
 
 *.png
 *.ttf
