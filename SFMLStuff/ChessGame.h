@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Timer.h"
+#include "Record.h"
 #include "Constants.h"
 #include "ChessBoard.h"
 #include "Pawn.h"
@@ -25,6 +26,7 @@ private:
 	Timer _time[2];
 	int _score[2];
 	GameState* _mouseState;
+	Record _record;
 
 public:
 	enum class TERMINATE_CODE {

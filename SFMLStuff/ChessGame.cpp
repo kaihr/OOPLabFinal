@@ -11,8 +11,11 @@ ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::Vid
 {
 	_isWhiteTurn = true;
 
+
 	_time[0].setTimer(FullTime(0, 5, 0));
+	_time[0].setPosition(600, 0);
 	_time[1].setTimer(FullTime(0, 5, 0));
+	_time[1].setPosition(600, 500);
 	_time[1].start();
 
 	for (int i = 0; i < 8; i++)
@@ -145,7 +148,7 @@ ChessGame::TERMINATE_CODE ChessGame::outOfMove()
 				return TERMINATE_CODE::CHECK_MATE;
 			}
 		}
-		
+
 
 	return TERMINATE_CODE::STALE_MATE;
 }

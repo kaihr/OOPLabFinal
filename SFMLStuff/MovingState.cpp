@@ -11,7 +11,7 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 
 		if (!Utility::inBoard(cell.x, cell.y)
 			|| (owner._pieces[cell.x][cell.y] == owner._currentChosen)
-			|| (owner._pieces[cell.x][cell.y] && owner._pieces[cell.x][cell.y]->isWhite() == owner._currentChosen->isWhite())) 
+			|| (owner._pieces[cell.x][cell.y] && owner._pieces[cell.x][cell.y]->isWhite() == owner._currentChosen->isWhite()))
 		{
 
 			rejectMove(owner);
@@ -38,7 +38,6 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 		rejectMove(owner);
 		return new NullState();
 	}
-
 	return NULL;
 }
 
