@@ -66,48 +66,67 @@ public:
 		_text.setFillColor(sf::Color::Red);
 		_font.loadFromFile("Assets\\arial.ttf");
 		_text.setFont(_font);
+
+		_isActive = false;
+		_left = _top = _remainingTime = 0;
 	}
+
 	void setPosition(int left, int top){
 		_left = left;
 		_top = top;
 		_text.setPosition(_left, _top);
 	}
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		states.transform *= getTransform();
 		target.draw(_text, states);
 	}
+
 	void setTimer(int hours, int minutes, int seconds, int miliseconds = 0) {
 		_remainingTime = hours * 60 * 60 * 1000 +
 			minutes * 60 * 1000 +
 			seconds * 1000 +
 			miliseconds;
+
+		_text.setString(getRemainingTime().toString());
 	}
+	
 	void setTimer(FullTime remainingTime) {
 		_remainingTime = remainingTime.toMiliseconds();
+
+		_text.setString(getRemainingTime().toString());
 	}
+	
 	bool isActive() {
 		return _isActive;
 	}
+
 	void start() {
 		_tick = high_resolution_clock::now();
 		_isActive = true;
 	}
+
 	bool update() {
-		time temp = high_resolution_clock::now();
-		int delta = duration_cast<milliseconds>(temp - _tick).count();
-		_remainingTime -= delta;
-		_tick = temp;
+		if (_isActive)
+		{
+			time temp = high_resolution_clock::now();
+			int delta = duration_cast<milliseconds>(temp - _tick).count();
 
-		_text.setString(getRemainingTime().toString());
-		//_text.setPosition(300, 300);
-
+			if (delta >= 1000) {
+				_remainingTime -= delta;
+				_tick = temp;
+				_text.setString(getRemainingTime().toString());
+			}
+		}
 
 		return _remainingTime > 0;
 	}
+
 	int stop() {
 		_isActive = false;
 		return update();
 	}
+
 	FullTime getRemainingTime() const {
 		int temp = _remainingTime;
 		int miliseconds = temp % 1000;

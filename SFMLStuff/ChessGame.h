@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <assert.h>
+
 #include "Timer.h"
 #include "Record.h"
 #include "Constants.h"
@@ -49,10 +51,18 @@ public:
 	ChessGame();
 	~ChessGame()
 	{
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				delete _pieces[i][j];
+		assert(_currentChosen == NULL);
 
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++) {
+				if (_pieces[i][j] == _preChosen)
+					_preChosen = NULL;
+
+				delete _pieces[i][j];
+				_pieces[i][j] = NULL;
+			}
+
+		delete _preChosen;
 		delete _mouseState;
 	}
 
