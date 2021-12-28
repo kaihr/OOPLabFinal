@@ -45,7 +45,6 @@ struct FullTime {
 			res += ".";
 			res += std::to_string(_miliseconds / 10);
 		}
-		std::cout << res << '\n';
 		return res;
 	}
 };
@@ -71,6 +70,7 @@ public:
 	void setPosition(int left, int top){
 		_left = left;
 		_top = top;
+		_text.setPosition(_left, _top);
 	}
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		states.transform *= getTransform();
