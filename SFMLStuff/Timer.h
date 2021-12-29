@@ -42,11 +42,15 @@ struct FullTime {
 			res += std::to_string(_hours);
 			res += ":";
 		}
-		if (_minutes){
+		else if (_minutes)
+			res += "0:";
+		if (_hours || _minutes){
 			if (_minutes < 10) res += "0";
 			res += std::to_string(_minutes);
 			res += ":";
 		}
+		else
+			res += "0:";
 		if (_seconds < 10) res += "0";
 		res += std::to_string(_seconds);
 		if (!_hours && !_minutes){
@@ -76,7 +80,11 @@ public:
 		_text.setFont(_font);
 		_text.setStyle(sf::Text::Bold);
 		_text.setString("0");
+
+		_isActive = false;
+		_left = _top = _remainingTime = 0;
 	}
+
 	void setPosition(int left, int top){
 		_left = left;
 		_top = top;
@@ -93,23 +101,32 @@ public:
 		else
 			_rect.setOutlineColor(sf::Color::White);
 	}
+
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		states.transform *= getTransform();
 		target.draw(_rect);
 		target.draw(_text, states);
 	}
+
 	void setTimer(int hours, int minutes, int seconds, int miliseconds = 0) {
 		_remainingTime = hours * 60 * 60 * 1000 +
 			minutes * 60 * 1000 +
 			seconds * 1000 +
 			miliseconds;
+
+		_text.setString(getRemainingTime().toString());
 	}
+
 	void setTimer(FullTime remainingTime) {
 		_remainingTime = remainingTime.toMiliseconds();
+
+		_text.setString(getRemainingTime().toString());
 	}
+
 	bool isActive() {
 		return _isActive;
 	}
+
 	void start() {
 		_tick = high_resolution_clock::now();
 		_isActive = true;
@@ -123,17 +140,26 @@ public:
 			_rect.setOutlineColor(sf::Color::Black);
 			_text.setColor(sf::Color::White);
 		}
-	}
-	bool update() {
-		time temp = high_resolution_clock::now();
-		int delta = duration_cast<milliseconds>(temp - _tick).count();
-		_remainingTime -= delta;
-		_tick = temp;
-
 		_text.setString(getRemainingTime().toString());
+	}
+
+
+	bool update() {
+		if (_isActive)
+		{
+			time temp = high_resolution_clock::now();
+			int delta = duration_cast<milliseconds>(temp - _tick).count();
+
+			if (delta >= 1000 || (_remainingTime <= 60 * 1000 && delta >= 10)) {
+				_remainingTime -= delta;
+				_tick = temp;
+				_text.setString(getRemainingTime().toString());
+			}
+		}
 
 		return _remainingTime > 0;
 	}
+
 	int stop() {
 		_isActive = false;
 		if (_top > 0) {
@@ -148,6 +174,7 @@ public:
 		}
 		return update();
 	}
+
 	FullTime getRemainingTime() const {
 		int temp = _remainingTime;
 		int miliseconds = temp % 1000;

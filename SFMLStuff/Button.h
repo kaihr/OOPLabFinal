@@ -18,8 +18,9 @@ private:
 	sf::Color _onHoverTextColor;
 
 	bool _isMouseOver;
+
 public:
-	Button(){}
+	Button() {}
 	Button(sf::Vector2f size, sf::Color color, std::string text, float textSize, sf::Color textColor, float left, float top): _left(left), _top(top), _color(color), _textColor(textColor), _onHoverColor(color), _onHoverTextColor(textColor), _isMouseOver(false) {
 			_font.loadFromFile("Assets\\arial.ttf");
 			_text.setFont(_font);
