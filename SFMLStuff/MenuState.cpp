@@ -1,48 +1,22 @@
 #include "MenuState.h"
 #include "NullState.h"
+#include "Button.h"
 #include <iostream>
 
-const float MENU_OPTION_WIDTH = 200;
-const float MENU_OPTION_HEIGHT = 70;
+const float MENU_OPTION_WIDTH = 250;
+const float MENU_OPTION_HEIGHT = 80;
 const sf::Color RECT_COLOR(206, 216, 229);
 const sf::Color ACTIVE_RECT_COLOR(148, 164, 188);
 const sf::Vector2f RECT_SIZE(MENU_OPTION_WIDTH, MENU_OPTION_HEIGHT);
-const sf::Vector2f ACTIVE_RECT_SIZE(250, 70);
-const float MENU_OPTION_PADDING_LEFT = 100;
 
-bool isMouseOnRect(float position, sf::Vector2i mousePos){
-	return mousePos.y >= position &&
-			mousePos.y <= position + MENU_OPTION_HEIGHT &&
-			mousePos.x >= MENU_OPTION_PADDING_LEFT &&
-			mousePos.x <= MENU_OPTION_PADDING_LEFT + MENU_OPTION_WIDTH;
-}
+MenuState::MenuState(ChessGame& owner) {
+	_button[0] = new Button(RECT_SIZE, RECT_COLOR, "Start", 50, sf::Color::Black, 250, 150);
+	_button[1] = new Button(RECT_SIZE, RECT_COLOR, "Load", 50, sf::Color::Black, 250, 250);
+	_button[2] = new Button(RECT_SIZE, RECT_COLOR, "Config", 50, sf::Color::Black, 250, 350);
+	_button[3] = new Button(RECT_SIZE, RECT_COLOR, "Exit", 50, sf::Color::Black, 250, 450);
+	for (int i = 0; i < 4; i++)
+		_button[i]->setOnHoverColor(ACTIVE_RECT_COLOR, sf::Color::Black);
 
-void MenuState::drawMenuOption(std::string s, float position, ChessGame& owner){
-	sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
-	bool onHover = isMouseOnRect(position, mousePos);
-	sf::Text text;
-	sf::RectangleShape rect;
-	if (!onHover){
-		rect.setSize(RECT_SIZE);
-		rect.setFillColor(RECT_COLOR);
-	}else{
-		rect.setSize(ACTIVE_RECT_SIZE);
-		rect.setFillColor(ACTIVE_RECT_COLOR);
-	}
-	rect.setPosition(sf::Vector2f(MENU_OPTION_PADDING_LEFT - 25, position));
-	owner._window.draw(rect);
-
-	text.setFont(font);
-	text.setString(s);
-	text.setCharacterSize(50);
-	text.setFillColor(sf::Color::Black);
-	text.setPosition(MENU_OPTION_PADDING_LEFT, position);
-
-	owner._window.draw(text);
-}
-
-MenuState::MenuState(ChessGame& owner){
-	font.loadFromFile("Assets\\arial.ttf");
 }
 
 void MenuState::draw(ChessGame& owner)
@@ -53,19 +27,14 @@ void MenuState::draw(ChessGame& owner)
 	sf::Sprite bg(texture);
 	owner._window.draw(bg);
 
-	/*
-	for (int i = 1; i <= 4; i++){
-		rect.setSize(sf::Vector2f(200, 70));
-		rect.setFillColor(rectColor1);
-		rect.setPosition(sf::Vector2f(75, i * 100));
-		owner._window.draw(rect);
+	sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
+	for (int i = 0; i < 4; i++){
+		_button[i]->update(mousePos);
+		owner._window.draw(*_button[i]);
 	}
-	*/
-
-	drawMenuOption("Start", 100, owner);
-	drawMenuOption("Load", 200, owner);
-	drawMenuOption("Config", 300, owner);
-	drawMenuOption("Exit", 400, owner);
+	//drawMenuOption("Load", 200, owner);
+	//drawMenuOption("Config", 300, owner);
+	//drawMenuOption("Exit", 400, owner);
 
 	owner._window.display();
 }
@@ -81,13 +50,13 @@ GameState* MenuState::handleInput(const sf::Event& event, ChessGame& owner)
 	}
 	if (event.type == sf::Event::MouseButtonPressed){
 		sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
-		if (isMouseOnRect(100, mousePos))
+		if (_button[0]->isMouseOver())
 			return new NullState();   // Start
-		if (isMouseOnRect(200, mousePos))
+		if (_button[1]->isMouseOver())
 			return NULL;   // Option 2
-		if (isMouseOnRect(300, mousePos))
+		if (_button[2]->isMouseOver())
 			return NULL;   // Option 3
-		if (isMouseOnRect(400, mousePos))
+		if (_button[3]->isMouseOver())
 			return NULL;   // Option 4
 		return NULL;
 	}
