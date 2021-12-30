@@ -36,7 +36,5 @@ void PauseState::draw(ChessGame& owner)
 	text.setOrigin(bound.width / 2, bound.height / 2);
 	text.setPosition(400, 300 - 80);
 
-	owner._window.clear();
 	owner._window.draw(text);
-	owner._window.display();
 }

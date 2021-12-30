@@ -79,7 +79,11 @@ void ChessGame::handleInput()
 
 void ChessGame::draw()
 {
+	_window.clear(BG_COLOR);
+
 	_mouseState->draw(*this);
+
+	_window.display();
 }
 
 void ChessGame::switchState(GameState* newState)

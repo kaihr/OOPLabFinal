@@ -1,5 +1,7 @@
 #pragma once
 
+const sf::Color BG_COLOR(50, 50, 50);
+
 const int CELL_LENGTH = 75;
 const int BOARD_SIZE = 8;
 

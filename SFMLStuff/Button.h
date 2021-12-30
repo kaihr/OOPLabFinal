@@ -20,13 +20,13 @@ private:
 	bool _isMouseOver;
 
 public:
-	Button() {}
+	// Button() {}
 	Button(sf::Vector2f size, sf::Color color, std::string text, float textSize, sf::Color textColor, float left, float top): _left(left), _top(top), _color(color), _textColor(textColor), _onHoverColor(color), _onHoverTextColor(textColor), _isMouseOver(false) {
 			_font.loadFromFile("Assets\\arial.ttf");
 			_text.setFont(_font);
 			_text.setCharacterSize(textSize);
 			_text.setString(text);
-			_text.setColor(textColor);
+			_text.setFillColor(textColor);
 			//center text
 			sf::FloatRect textRect = _text.getLocalBounds();
 			_text.setOrigin(textRect.width / 2.0f, textRect.height / 2.0f + textSize / 4);
@@ -60,14 +60,14 @@ public:
 			mousePos.x <= _left + size.x / 2 && mousePos.y <= _top + size.y / 2) {
 				_rect.setOutlineThickness(5);
 				_rect.setFillColor(_onHoverColor);
-				_text.setColor(_onHoverTextColor);
+				_text.setFillColor(_onHoverTextColor);
 				_isMouseOver = true;
 		}
 		else {
 			_rect.setOutlineThickness(0);
 			setScale(sf::Vector2f(1, 1));
 			_rect.setFillColor(_color);
-			_text.setColor(_textColor);
+			_text.setFillColor(_textColor);
 			_isMouseOver = false;
 		}
 	}

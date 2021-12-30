@@ -1,13 +1,9 @@
 #include "GameState.h"
 #include "Button.h"
 
-const sf::Color BG_COLOR(50, 50, 50);
-
 void GameState::draw(ChessGame& game)
 {
-	game._window.clear(BG_COLOR);
 	game._window.draw(game._board);
-
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -19,6 +15,4 @@ void GameState::draw(ChessGame& game)
 
 	game._window.draw(game._time[0]);
 	game._window.draw(game._time[1]);
-
-	game._window.display();
 }

@@ -133,12 +133,12 @@ public:
 		if (_top > 0) {
 			_rect.setFillColor(sf::Color::White);
 			_rect.setOutlineColor(sf::Color::Black);
-			_text.setColor(sf::Color::Black);
+			_text.setFillColor(sf::Color::Black);
 		}
 		else {
 			_rect.setFillColor(sf::Color::Black);
 			_rect.setOutlineColor(sf::Color::Black);
-			_text.setColor(sf::Color::White);
+			_text.setFillColor(sf::Color::White);
 		}
 		_text.setString(getRemainingTime().toString());
 	}
@@ -165,12 +165,12 @@ public:
 		if (_top > 0) {
 			_rect.setFillColor(WHITE_INACTIVE);
 			_rect.setOutlineColor(BLACK_INACTIVE);
-			_text.setColor(BLACK_INACTIVE);
+			_text.setFillColor(BLACK_INACTIVE);
 		}
 		else {
 			_rect.setFillColor(BLACK_INACTIVE);
 			_rect.setOutlineColor(BLACK_INACTIVE);
-			_text.setColor(WHITE_INACTIVE);
+			_text.setFillColor(WHITE_INACTIVE);
 		}
 		return update();
 	}

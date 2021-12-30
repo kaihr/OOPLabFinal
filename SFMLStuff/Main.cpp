@@ -10,7 +10,7 @@ TextureManager *TextureManager::instance = NULL;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Chess");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Chess", sf::Style::Titlebar | sf::Style::Close);
 	MenuState menu(window);
 
 	while (window.isOpen()) {
