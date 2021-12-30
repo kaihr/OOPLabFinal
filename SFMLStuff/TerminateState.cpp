@@ -2,6 +2,11 @@
 
 GameState* TerminateState::handleInput(const sf::Event& event, ChessGame& owner)
 {
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Q)
+			owner._gameRunning = false;
+	}
+
 	return NULL;
 }
 

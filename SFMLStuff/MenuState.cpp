@@ -19,43 +19,49 @@ MenuState::MenuState(ChessGame& owner) {
 
 }
 
-void MenuState::draw(ChessGame& owner)
+MenuState::MenuState(sf::RenderWindow& window) : _window(window)
 {
-	owner._window.clear();
+	font.loadFromFile("Assets\\arial.ttf");
+}
+
+void MenuState::draw()
+{
+	_window.clear();
 	sf::Texture texture;
 	texture.loadFromFile("Assets\\menu_background.jpg");
 	sf::Sprite bg(texture);
-	owner._window.draw(bg);
+	_window.draw(bg);
 
 	sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
 	for (int i = 0; i < 4; i++){
 		_button[i]->update(mousePos);
 		owner._window.draw(*_button[i]);
 	}
-	owner._window.display();
+	*/
+
+	drawMenuOption("Start", 100);
+	drawMenuOption("Load", 200);
+	drawMenuOption("Config", 300);
+	drawMenuOption("Exit", 400);
+
+	_window.display();
 }
 
-GameState* MenuState::handleInput(const sf::Event& event, ChessGame& owner)
+MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::S)
-			return new NullState();
-
-		return NULL;
-	}
 	if (event.type == sf::Event::MouseButtonPressed){
-		sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
-		if (_button[0]->isMouseOver())
-			return new NullState();   // Start
-		if (_button[1]->isMouseOver())
-			return NULL;   // Option 2
-		if (_button[2]->isMouseOver())
-			return NULL;   // Option 3
-		if (_button[3]->isMouseOver())
-			return NULL;   // Option 4
-		return NULL;
+		sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+		
+		if (isMouseOnRect(100, mousePos))
+			return OPTION::START;
+		if (isMouseOnRect(200, mousePos))
+			return OPTION::MENU;
+		if (isMouseOnRect(300, mousePos))
+			return OPTION::MENU;
+		if (isMouseOnRect(400, mousePos))
+			return OPTION::EXIT;
 	}
 
-	return NULL;
+	return OPTION::MENU;
 }
 
