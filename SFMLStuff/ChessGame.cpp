@@ -7,10 +7,10 @@
 
 #include <iostream>
 
-ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::VideoMode(800, 600), "Chess")
+ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
 	_isWhiteTurn = true;
-
+	_gameRunning = true;
 
 	_time[0].setTimer(FullTime(0, 5, 0));
 	_time[0].setPosition(600, 0);
@@ -50,28 +50,24 @@ ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::Vid
 
 	_score[0] = _score[1] = 0;
 
-	_mouseState = new MenuState(*this);
+	_mouseState = new NullState();
 }
 
 void ChessGame::handleInput()
 {
 	TERMINATE_CODE code = outOfMove();
-	if (code == TERMINATE_CODE::CHECK_MATE) {
-		std::cout << "Chech met^' bruh" << std::endl;
+	if (code == TERMINATE_CODE::CHECK_MATE)
 		switchState(new TerminateState());
-	}
 
-	if (code == TERMINATE_CODE::STALE_MATE) {
-		std::cout << "Xi tel met^' bruh" << std::endl;
+	if (code == TERMINATE_CODE::STALE_MATE)
 		switchState(new TerminateState());
-	}
 
 	sf::Event event;
 
 	while (_window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
-			_window.close();
+			_gameRunning = false;
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
 		if (tmp)
@@ -100,8 +96,7 @@ void ChessGame::update() {
 
 void ChessGame::run()
 {
-	std::cout << _window.isOpen() << std::endl;
-	while (_window.isOpen())
+	while (_gameRunning)
 	{
 		handleInput();
 		update();

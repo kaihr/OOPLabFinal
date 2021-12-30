@@ -17,8 +17,8 @@ bool isMouseOnRect(float position, sf::Vector2i mousePos){
 			mousePos.x <= MENU_OPTION_PADDING_LEFT + MENU_OPTION_WIDTH;
 }
 
-void MenuState::drawMenuOption(std::string s, float position, ChessGame& owner){
-	sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
+void MenuState::drawMenuOption(std::string s, float position){
+	sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
 	bool onHover = isMouseOnRect(position, mousePos);
 	sf::Text text;
 	sf::RectangleShape rect;
@@ -30,7 +30,7 @@ void MenuState::drawMenuOption(std::string s, float position, ChessGame& owner){
 		rect.setFillColor(ACTIVE_RECT_COLOR);
 	}
 	rect.setPosition(sf::Vector2f(MENU_OPTION_PADDING_LEFT - 25, position));
-	owner._window.draw(rect);
+	_window.draw(rect);
 
 	text.setFont(font);
 	text.setString(s);
@@ -38,20 +38,21 @@ void MenuState::drawMenuOption(std::string s, float position, ChessGame& owner){
 	text.setFillColor(sf::Color::Black);
 	text.setPosition(MENU_OPTION_PADDING_LEFT, position);
 
-	owner._window.draw(text);
+	_window.draw(text);
 }
 
-MenuState::MenuState(ChessGame& owner){
+MenuState::MenuState(sf::RenderWindow& window) : _window(window)
+{
 	font.loadFromFile("Assets\\arial.ttf");
 }
 
-void MenuState::draw(ChessGame& owner)
+void MenuState::draw()
 {
-	owner._window.clear();
+	_window.clear();
 	sf::Texture texture;
 	texture.loadFromFile("Assets\\menu_background.jpg");
 	sf::Sprite bg(texture);
-	owner._window.draw(bg);
+	_window.draw(bg);
 
 	/*
 	for (int i = 1; i <= 4; i++){
@@ -62,36 +63,29 @@ void MenuState::draw(ChessGame& owner)
 	}
 	*/
 
-	drawMenuOption("Start", 100, owner);
-	drawMenuOption("Load", 200, owner);
-	drawMenuOption("Config", 300, owner);
-	drawMenuOption("Exit", 400, owner);
+	drawMenuOption("Start", 100);
+	drawMenuOption("Load", 200);
+	drawMenuOption("Config", 300);
+	drawMenuOption("Exit", 400);
 
-	owner._window.display();
+	_window.display();
 }
 
-GameState* MenuState::handleInput(const sf::Event& event, ChessGame& owner)
+MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 {
-
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::S)
-			return new NullState();
-
-		return NULL;
-	}
 	if (event.type == sf::Event::MouseButtonPressed){
-		sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
+		sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+		
 		if (isMouseOnRect(100, mousePos))
-			return new NullState();   // Start
+			return OPTION::START;
 		if (isMouseOnRect(200, mousePos))
-			return NULL;   // Option 2
+			return OPTION::MENU;
 		if (isMouseOnRect(300, mousePos))
-			return NULL;   // Option 3
+			return OPTION::MENU;
 		if (isMouseOnRect(400, mousePos))
-			return NULL;   // Option 4
-		return NULL;
+			return OPTION::EXIT;
 	}
 
-	return NULL;
+	return OPTION::MENU;
 }
 
