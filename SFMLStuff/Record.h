@@ -4,6 +4,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include "Piece.h"
 
 class Record{
 private:

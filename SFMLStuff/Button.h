@@ -17,6 +17,7 @@ private:
 	sf::Color _onHoverColor;
 	sf::Color _onHoverTextColor;
 
+	float _currentScale;
 	bool _isMouseOver;
 
 public:
@@ -39,6 +40,8 @@ public:
 			_rect.setFillColor(color);
 			_rect.setOutlineColor(color);
 			_rect.setOutlineThickness(0);
+
+			_currentScale = 1;
 		}
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -58,14 +61,20 @@ public:
 		sf::Vector2f size = _rect.getSize();
 		if (mousePos.x >= _left - size.x / 2 && mousePos.y >= _top - size.y / 2 &&
 			mousePos.x <= _left + size.x / 2 && mousePos.y <= _top + size.y / 2) {
-				_rect.setOutlineThickness(5);
+				//_rect.setOutlineThickness(5);
+				if (_currentScale < 1.1)
+					_currentScale += 0.005;
+				_text.setScale(sf::Vector2f(_currentScale, _currentScale));
+				_rect.setScale(sf::Vector2f(_currentScale, _currentScale));
 				_rect.setFillColor(_onHoverColor);
 				_text.setFillColor(_onHoverTextColor);
 				_isMouseOver = true;
 		}
 		else {
-			_rect.setOutlineThickness(0);
-			setScale(sf::Vector2f(1, 1));
+			if (_currentScale > 1)
+				_currentScale -= 0.005;
+			_text.setScale(sf::Vector2f(_currentScale, _currentScale));
+			_rect.setScale(sf::Vector2f(_currentScale, _currentScale));
 			_rect.setFillColor(_color);
 			_text.setFillColor(_textColor);
 			_isMouseOver = false;
