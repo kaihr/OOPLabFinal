@@ -35,12 +35,22 @@ bool King::validAndNotInCheck(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE
 		&& pieces[_row][_col]->validCell(nextRow, nextCol, pieces)) {
 
 		bool ans = true;
-		std::swap(pieces[_row][_col], pieces[nextRow][nextCol]);
 
-		if (putKingInDanger(nextRow, nextCol, nextRow, nextCol, pieces))
-			ans = false;
+		int delta = -1;
+		if (_col < nextCol)
+			delta = 1;
 
-		std::swap(pieces[_row][_col], pieces[nextRow][nextCol]);
+		int pathCol = _col + delta;
+
+		while (true) {
+			std::swap(pieces[_row][_col], pieces[nextRow][pathCol]);
+			if (putKingInDanger(nextRow, pathCol, nextRow, pathCol, pieces))
+				ans = false;
+			std::swap(pieces[_row][_col], pieces[nextRow][pathCol]);
+			if (pathCol == nextCol)
+				break;
+			pathCol += delta;
+		}
 
 		return ans;
 	}
