@@ -74,8 +74,10 @@ void ChessGame::handleInput()
 
 	while (_window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		if (event.type == sf::Event::Closed) {
+			switchState(new TerminateState());
 			_gameRunning = false;
+		}
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
 		if (tmp)
