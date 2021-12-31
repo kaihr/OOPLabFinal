@@ -19,8 +19,8 @@ private:
 	sf::RenderWindow& _window;
 
 public:
-	void drawMenuOption(std::string s, float position);
 	MenuState(sf::RenderWindow &window);
 	void draw();
 	OPTION handleInput(const sf::Event &event);
+	~MenuState();
 };

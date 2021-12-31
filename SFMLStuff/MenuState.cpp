@@ -1,13 +1,10 @@
 #include "MenuState.h"
 #include "NullState.h"
 #include "Button.h"
-#include <iostream>
+#include "TextureManager.h"
+#include "Constants.h"
 
-const float MENU_OPTION_WIDTH = 250;
-const float MENU_OPTION_HEIGHT = 80;
-const sf::Color RECT_COLOR(206, 216, 229);
-const sf::Color ACTIVE_RECT_COLOR(236, 246, 255);
-const sf::Vector2f RECT_SIZE(MENU_OPTION_WIDTH, MENU_OPTION_HEIGHT);
+#include <iostream>
 
 MenuState::MenuState(sf::RenderWindow& window) : _window(window) {
 	_button[0] = new Button(RECT_SIZE, RECT_COLOR, "Start", 50, sf::Color::Black, 200, 150);
@@ -21,9 +18,7 @@ MenuState::MenuState(sf::RenderWindow& window) : _window(window) {
 void MenuState::draw()
 {
 	_window.clear();
-	sf::Texture texture;
-	texture.loadFromFile("Assets\\menu_background.jpg");
-	sf::Sprite bg(texture);
+	sf::Sprite bg(TextureManager::getTexture(PIECES::BACKGROUND));
 	_window.draw(bg);
 
 	sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
@@ -51,5 +46,13 @@ MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 	}
 
 	return OPTION::MENU;
+}
+
+MenuState::~MenuState()
+{
+	for (int i = 0; i < 4; i++) {
+		delete _button[i];
+		_button[i] = NULL;
+	}
 }
 

@@ -1,6 +1,12 @@
 #pragma once
 
+const float MENU_OPTION_WIDTH = 250;
+const float MENU_OPTION_HEIGHT = 80;
+
 const sf::Color BG_COLOR(50, 50, 50);
+const sf::Color RECT_COLOR(206, 216, 229);
+const sf::Color ACTIVE_RECT_COLOR(236, 246, 255);
+const sf::Vector2f RECT_SIZE(MENU_OPTION_WIDTH, MENU_OPTION_HEIGHT);
 
 const int CELL_LENGTH = 75;
 const int BOARD_SIZE = 8;
@@ -27,6 +33,7 @@ enum class PIECES {
 	BLACK_KNIGHT,
 
 	TILE_SET,
+	BACKGROUND,
 
 	N_TEXTURES
 };

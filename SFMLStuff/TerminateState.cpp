@@ -13,4 +13,5 @@ GameState* TerminateState::handleInput(const sf::Event& event, ChessGame& owner)
 void TerminateState::entry(ChessGame &owner)
 {
 	owner._time[owner._isWhiteTurn].stop();
+	owner._gameRunning = false;
 }
