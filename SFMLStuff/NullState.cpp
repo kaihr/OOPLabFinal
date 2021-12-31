@@ -3,12 +3,13 @@
 #include "MovingKingState.h"
 #include "MovingPawnState.h"
 #include "MenuState.h"
+#include "PauseState.h"
 
 GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code == sf::Keyboard::Escape)
-			return new MenuState(owner);
+			return new PauseState();
 	}
 
 	if (event.type == sf::Event::MouseButtonPressed) {

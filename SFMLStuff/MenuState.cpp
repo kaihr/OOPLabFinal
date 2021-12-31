@@ -1,61 +1,58 @@
 #include "MenuState.h"
 #include "NullState.h"
 #include "Button.h"
+#include "TextureManager.h"
+#include "Constants.h"
+
 #include <iostream>
 
-const float MENU_OPTION_WIDTH = 250;
-const float MENU_OPTION_HEIGHT = 80;
-const sf::Color RECT_COLOR(206, 216, 229);
-const sf::Color ACTIVE_RECT_COLOR(236, 246, 255);
-const sf::Vector2f RECT_SIZE(MENU_OPTION_WIDTH, MENU_OPTION_HEIGHT);
-
-MenuState::MenuState(ChessGame& owner) {
+MenuState::MenuState(sf::RenderWindow& window) : _window(window) {
 	_button[0] = new Button(RECT_SIZE, RECT_COLOR, "Start", 50, sf::Color::Black, 200, 150);
 	_button[1] = new Button(RECT_SIZE, RECT_COLOR, "Load", 50, sf::Color::Black, 200, 250);
 	_button[2] = new Button(RECT_SIZE, RECT_COLOR, "Config", 50, sf::Color::Black, 200, 350);
 	_button[3] = new Button(RECT_SIZE, RECT_COLOR, "Exit", 50, sf::Color::Black, 200, 450);
 	for (int i = 0; i < 4; i++)
 		_button[i]->setOnHoverColor(ACTIVE_RECT_COLOR, sf::Color::Black);
-
 }
 
-void MenuState::draw(ChessGame& owner)
+void MenuState::draw()
 {
-	owner._window.clear();
-	sf::Texture texture;
-	texture.loadFromFile("Assets\\menu_background.jpg");
-	sf::Sprite bg(texture);
-	owner._window.draw(bg);
+	_window.clear();
+	sf::Sprite bg(TextureManager::getTexture(PIECES::BACKGROUND));
+	_window.draw(bg);
 
-	sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
+	sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
 	for (int i = 0; i < 4; i++){
 		_button[i]->update(mousePos);
-		owner._window.draw(*_button[i]);
+		_window.draw(*_button[i]);
 	}
-	owner._window.display();
+
+	_window.display();
 }
 
-GameState* MenuState::handleInput(const sf::Event& event, ChessGame& owner)
+MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 {
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::S)
-			return new NullState();
-
-		return NULL;
-	}
 	if (event.type == sf::Event::MouseButtonPressed){
-		sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
-		if (_button[0]->isMouseOver())
-			return new NullState();   // Start
+		sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+		
+		if(_button[0]->isMouseOver())
+			return OPTION::START;
 		if (_button[1]->isMouseOver())
-			return NULL;   // Option 2
+			return OPTION::MENU;
 		if (_button[2]->isMouseOver())
-			return NULL;   // Option 3
+			return OPTION::MENU;
 		if (_button[3]->isMouseOver())
-			return NULL;   // Option 4
-		return NULL;
+			return OPTION::EXIT;
 	}
 
-	return NULL;
+	return OPTION::MENU;
+}
+
+MenuState::~MenuState()
+{
+	for (int i = 0; i < 4; i++) {
+		delete _button[i];
+		_button[i] = NULL;
+	}
 }
 

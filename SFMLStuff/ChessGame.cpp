@@ -7,9 +7,10 @@
 
 #include <iostream>
 
-ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::VideoMode(800, 600), "Chess", sf::Style::Titlebar | sf::Style::Close)    // Disable resize window
+ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
 	_isWhiteTurn = true;
+	_gameRunning = true;
 
 	_time[0].setTimer(FullTime(0, 1, 0));
 	_time[0].setPosition(600, 0);
@@ -51,19 +52,21 @@ ChessGame::ChessGame() : _currentChosen(NULL), _preChosen(NULL), _window(sf::Vid
 
 	_score[0] = _score[1] = 0;
 
-	_mouseState = new MenuState(*this);
+	_mouseState = new NullState();
 }
 
 void ChessGame::handleInput()
 {
 	TERMINATE_CODE code = outOfMove();
 	if (code == TERMINATE_CODE::CHECK_MATE) {
-		std::cout << "Chech met^' bruh" << std::endl;
 		switchState(new TerminateState());
 	}
 
 	if (code == TERMINATE_CODE::STALE_MATE) {
-		std::cout << "Xi tel met^' bruh" << std::endl;
+		switchState(new TerminateState());
+	}
+
+	if (!_time[_isWhiteTurn].update()) {
 		switchState(new TerminateState());
 	}
 
@@ -71,8 +74,10 @@ void ChessGame::handleInput()
 
 	while (_window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
-			_window.close();
+		if (event.type == sf::Event::Closed) {
+			switchState(new TerminateState());
+			_gameRunning = false;
+		}
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
 		if (tmp)
@@ -82,7 +87,11 @@ void ChessGame::handleInput()
 
 void ChessGame::draw()
 {
+	_window.clear(BG_COLOR);
+
 	_mouseState->draw(*this);
+
+	_window.display();
 }
 
 void ChessGame::switchState(GameState* newState)
@@ -101,13 +110,41 @@ void ChessGame::update() {
 
 void ChessGame::run()
 {
-	std::cout << _window.isOpen() << std::endl;
-	while (_window.isOpen())
-	{
+	while (_gameRunning) {
 		handleInput();
 		update();
 		draw();
 	}
+
+	Button* button = new Button(sf::Vector2f(400, MENU_OPTION_HEIGHT), RECT_COLOR, "Back to menu", 50, sf::Color::Black, 300, 300);
+	
+	_gameRunning = true;
+	
+	while (_gameRunning) {
+		sf::Event event;
+		while (_window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
+				_gameRunning = false;
+		}
+
+		if (event.type == sf::Event::MouseButtonPressed) {
+			if (button->isMouseOver())
+				_gameRunning = false;
+		}
+
+		button->update(sf::Mouse::getPosition(_window));
+
+		_window.clear(BG_COLOR);
+		
+		_mouseState->draw(*this);
+
+		_window.draw(*button);
+		
+		_window.display();
+	}
+
+	delete button;
 }
 
 ChessGame::TERMINATE_CODE ChessGame::outOfMove()

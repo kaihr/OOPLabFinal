@@ -23,12 +23,13 @@ private:
 	Piece* _pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* _currentChosen;
 	Piece* _preChosen;
-	sf::RenderWindow _window;
+	sf::RenderWindow &_window;
 	bool _isWhiteTurn;
 	Timer _time[2];
 	int _score[2];
 	GameState* _mouseState;
 	Record _record;
+	bool _gameRunning;
 
 public:
 	enum class TERMINATE_CODE {
@@ -47,8 +48,9 @@ public:
 	friend class MenuOption;
 	friend class TerminateState;
 	friend class PromotionState;
+	friend class PauseState;
 
-	ChessGame();
+	ChessGame(sf::RenderWindow &window);
 	~ChessGame()
 	{
 		assert(_currentChosen == NULL);

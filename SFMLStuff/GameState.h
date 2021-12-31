@@ -8,4 +8,5 @@ public:
 	virtual void update(ChessGame& game) {};
 	virtual void draw(ChessGame& game);
 	virtual GameState *handleInput(const sf::Event& e, ChessGame& game) = 0;
+	virtual ~GameState() {};
 };
