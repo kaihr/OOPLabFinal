@@ -6,6 +6,7 @@
 
 #include "Timer.h"
 #include "Record.h"
+#include "Button.h"
 #include "Constants.h"
 #include "ChessBoard.h"
 #include "Pawn.h"
@@ -30,6 +31,7 @@ private:
 	GameState* _mouseState;
 	Record _record;
 	bool _gameRunning;
+	Button* _button[3];
 
 public:
 	enum class TERMINATE_CODE {
@@ -72,6 +74,7 @@ public:
 	void update();
 	void draw();
 	void switchState(GameState *newState);
+	void handleButton(int btnId);
 	void run();
 
 	TERMINATE_CODE outOfMove();

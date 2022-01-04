@@ -20,6 +20,10 @@ ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChose
 	_time[0].stop();
 	_time[1].start();
 
+	_button[0] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Undo", 35, sf::Color::Black, 700, 220);
+	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Menu", 35, sf::Color::Black, 700, 300);
+	_button[2] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Exit", 35, sf::Color::Black, 700, 380);
+
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
 			_pieces[i][j] = NULL;
@@ -91,6 +95,9 @@ void ChessGame::draw()
 
 	_mouseState->draw(*this);
 
+	for (int i = 0; i < 3; i++)
+		_window.draw(*_button[i]);
+
 	_window.display();
 }
 
@@ -103,9 +110,39 @@ void ChessGame::switchState(GameState* newState)
 	_mouseState->entry(*this);
 }
 
+void ChessGame::handleButton(int btnId)
+{
+	if (btnId == 0) {
+		_isWhiteTurn ^= 1;
+		_record.undo();
+		for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++){
+			delete _pieces[i][j];
+			_pieces[i][j] = NULL;
+			char piece = _record.pieceAt(i, j);
+
+			if (piece == 'p') _pieces[i][j] = new Pawn(i, j, false);
+			else if (piece == 'P') _pieces[i][j] = new Pawn(i, j);
+			else if (piece == 'r') _pieces[i][j] = new Rook(i, j, false);
+			else if (piece == 'R') _pieces[i][j] = new Rook(i, j);
+			else if (piece == 'n') _pieces[i][j] = new Knight(i, j, false);
+			else if (piece == 'N') _pieces[i][j] = new Knight(i, j);
+			else if (piece == 'b') _pieces[i][j] = new Bishop(i, j, false);
+			else if (piece == 'B') _pieces[i][j] = new Bishop(i, j);
+			else if (piece == 'q') _pieces[i][j] = new Queen(i, j, false);
+			else if (piece == 'Q') _pieces[i][j] = new Queen(i, j);
+			else if (piece == 'k') _pieces[i][j] = new King(i, j, false);
+			else if (piece == 'K') _pieces[i][j] = new King(i, j);
+		}
+	}
+}
+
 void ChessGame::update() {
 	_mouseState->update(*this);
 	_time[_isWhiteTurn].update();
+	sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
+	for (int i = 0; i < 3; i++)
+		_button[i]->update(mousePos);
 }
 
 void ChessGame::run()
@@ -117,9 +154,9 @@ void ChessGame::run()
 	}
 
 	Button* button = new Button(sf::Vector2f(400, MENU_OPTION_HEIGHT), RECT_COLOR, "Back to menu", 50, sf::Color::Black, 300, 300);
-	
+
 	_gameRunning = true;
-	
+
 	while (_gameRunning) {
 		sf::Event event;
 		while (_window.pollEvent(event))
@@ -136,11 +173,11 @@ void ChessGame::run()
 		button->update(sf::Mouse::getPosition(_window));
 
 		_window.clear(BG_COLOR);
-		
+
 		_mouseState->draw(*this);
 
 		_window.draw(*button);
-		
+
 		_window.display();
 	}
 

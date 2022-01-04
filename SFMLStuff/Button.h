@@ -63,7 +63,7 @@ public:
 			mousePos.x <= _left + size.x / 2 && mousePos.y <= _top + size.y / 2) {
 				//_rect.setOutlineThickness(5);
 				if (_currentScale < 1.1)
-					_currentScale += 0.005;
+					_currentScale += 0.0005;
 				_text.setScale(sf::Vector2f(_currentScale, _currentScale));
 				_rect.setScale(sf::Vector2f(_currentScale, _currentScale));
 				_rect.setFillColor(_onHoverColor);
@@ -83,5 +83,12 @@ public:
 
 	bool isMouseOver(){
 		return _isMouseOver;
+	}
+
+	bool isMouseOver(sf::Vector2i mousePos){
+		// Make effect on mouse over
+		sf::Vector2f size = _rect.getSize();
+		return (mousePos.x >= _left - size.x / 2 && mousePos.y >= _top - size.y / 2 &&
+			mousePos.x <= _left + size.x / 2 && mousePos.y <= _top + size.y / 2);
 	}
 };

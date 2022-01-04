@@ -26,7 +26,7 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 			owner._pieces[cell.x][cell.y] = owner._currentChosen;
 			owner._currentChosen->setPos(cell.x, cell.y);
 
-			std::cout << owner._currentChosen->moveToString(_row, _col, cell.x, cell.y) << '\n';
+			owner._record.addMove(owner._currentChosen->moveToString(_row, _col, cell.x, cell.y));
 
 			acceptMove(owner);
 			return new NullState();
