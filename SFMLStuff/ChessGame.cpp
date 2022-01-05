@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {

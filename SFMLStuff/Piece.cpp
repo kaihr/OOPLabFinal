@@ -3,35 +3,6 @@
 
 #include "Piece.h"
 
-std::string Piece::moveToString(int fromRow, int fromCol, int toRow, int toCol){
-	std::string str;
-	switch (_type){
-		case Piece::Type::PAWN:
-			str += "P";
-			break;
-		case Piece::Type::KING:
-			str += "K";
-			break;
-		case Piece::Type::QUEEN:
-			str += "Q";
-			break;
-		case Piece::Type::BISHOP:
-			str += "B";
-			break;
-		case Piece::Type::KNIGHT:
-			str += "N";
-			break;
-		case Piece::Type::ROOK:
-			str += "R";
-			break;
-	}
-	str += char(fromRow + 48);
-	str += char(fromCol + 48);
-	str += char(toRow + 48);
-	str += char(toCol + 48);
-	return str;
-}
-
 bool Piece::putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
 	bool curColor = pieces[fromRow][fromCol]->isWhite();

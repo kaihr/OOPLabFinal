@@ -70,7 +70,6 @@ public:
 	Type type() { return _type; };
 
 public:
-	std::string moveToString(int fromRow, int fromCol, int toRow, int toCol);
 	bool putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 	virtual bool validAndNotInCheck(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 

@@ -25,8 +25,6 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 					owner._pieces[cell.x][cell.y] = owner._currentChosen;
 					owner._currentChosen->setPos(cell.x, cell.y);
 
-					std::cout << owner._currentChosen->moveToString(_row, _col, cell.x, cell.y) << '\n';
-
 					acceptMove(owner);
 					return new NullState();
 				}
@@ -44,8 +42,6 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				owner._pieces[cell.x][cell.y] = owner._currentChosen;
 				owner._currentChosen->setPos(cell.x, cell.y);
 
-				std::cout << owner._currentChosen->moveToString(_row, _col, cell.x, cell.y) << '\n';
-
 				acceptMove(owner);
 				owner._preChosen->switchEnPassant();
 				return new NullState();
@@ -59,8 +55,6 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				owner._pieces[_row][_col] = NULL;
 				owner._pieces[cell.x][cell.y] = owner._currentChosen;
 				owner._currentChosen->setPos(cell.x, cell.y);
-
-				std::cout << owner._currentChosen->moveToString(_row, _col, cell.x, cell.y) << '\n';
 
 				return new PromotionState(cell.x, cell.y);
 			}
