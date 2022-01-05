@@ -13,12 +13,18 @@ GameState* MovingKingState::handleInput(const sf::Event& event, ChessGame& owner
 			owner._currentChosen->setPos(cell.x, cell.y);
 
 			if (cell.y == _col + 2) {
+				if (!owner._currentChosen->validAndNotInCheck(cell.x, _col + 1, owner._pieces))
+					return MovingState::handleInput(event, owner);
+
 				owner._pieces[cell.x][_col + 1] = owner._pieces[cell.x][7];
 				owner._pieces[cell.x][7]->setPos(cell.x, _col + 1);
 				owner._pieces[cell.x][7] = NULL;
 			}
 
 			if (cell.y == _col - 2) {
+				if (!owner._currentChosen->validAndNotInCheck(cell.x, _col - 1, owner._pieces))
+					return MovingState::handleInput(event, owner);
+
 				owner._pieces[cell.x][_col - 1] = owner._pieces[cell.x][0];
 				owner._pieces[cell.x][0]->setPos(cell.x, _col - 1);
 				owner._pieces[cell.x][0] = NULL;

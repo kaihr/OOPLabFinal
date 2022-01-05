@@ -1,14 +1,26 @@
 #pragma once
 #include "GameState.h"
+#include "Button.h"
 #include <string>
+#include <SFML/Graphics.hpp>
 
-
-class MenuState : public GameState {
-private:
-	sf::Font font;
+class MenuState {
 public:
-	void drawMenuOption(std::string s, float position, ChessGame& owner);
-	MenuState(ChessGame& owner);
-	void draw(ChessGame& owner);
-	GameState* handleInput(const sf::Event &event, ChessGame &owner);
+	enum class OPTION {
+		MENU,
+		START,
+		LOAD,
+		CONFIG,
+		EXIT
+	};
+
+private:
+	Button* _button[4];
+	sf::RenderWindow& _window;
+
+public:
+	MenuState(sf::RenderWindow &window);
+	void draw();
+	OPTION handleInput(const sf::Event &event);
+	~MenuState();
 };

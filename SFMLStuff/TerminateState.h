@@ -3,4 +3,6 @@
 
 class TerminateState : public GameState {
 	GameState* handleInput(const sf::Event& event, ChessGame& owner);
+
+	void entry(ChessGame &game);
 };

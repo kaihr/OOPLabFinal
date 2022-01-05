@@ -33,6 +33,8 @@ public:
 			instance->_arr[(int)PIECES::BLACK_ROOK].loadFromFile("Assets\\black_rook.png");
 
 			instance->_arr[(int)PIECES::TILE_SET].loadFromFile("Assets\\tileset.png");
+
+			instance->_arr[(int)PIECES::BACKGROUND].loadFromFile("Assets\\menu_background.jpg");
 		}
 
 		return instance;

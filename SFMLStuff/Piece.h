@@ -36,7 +36,7 @@ private:
 	}
 
 public:
-	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) : 
+	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) :
 		_row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false), _type(type), _enPassant(false) {}
 
 	bool isWhite() { return _isWhite; };
@@ -62,7 +62,7 @@ public:
 			_col = col;
 		}
 
-		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH); 
+		_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
 	};
 
 public:
@@ -75,6 +75,7 @@ public:
 	Type type() { return _type; };
 
 public:
+	std::string moveToString(int fromRow, int fromCol, int toRow, int toCol);
 	bool putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 	virtual bool validAndNotInCheck(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 };
