@@ -19,9 +19,7 @@ public:
 
 protected:
 	int _row, _col;
-	bool _selected;
 	bool _isWhite;
-	bool _isAlive;
 	bool _enPassant;
 	int _hasMoved; //For castling and pawn movement
 	Type _type;
@@ -36,15 +34,12 @@ private:
 	}
 
 public:
-	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN) :
-		_row(row), _col(col), _selected(false), _isWhite(isWhite), _isAlive(true), _hasMoved(false), _type(type), _enPassant(false) {}
+	Piece(int row = 0, int col = 0, bool isWhite = true, Type type = Type::PAWN, bool sEnPassant = false, int sHasMoved = 0) :
+		_row(row), _col(col), _isWhite(isWhite), _hasMoved(sHasMoved), _type(type), _enPassant(sEnPassant) {}
 
 	bool isWhite() { return _isWhite; };
 
 	virtual bool validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE]) { return true; }
-
-	// This might be deprecated, idk
-	// virtual Piece* handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE]);
 
 	void moveWithMouse(const sf::Window &window)
 	{
@@ -78,4 +73,7 @@ public:
 	std::string moveToString(int fromRow, int fromCol, int toRow, int toCol);
 	bool putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
 	virtual bool validAndNotInCheck(int nextRow, int nextCol, Piece *pieces[BOARD_SIZE][BOARD_SIZE]);
+
+public:
+	std::string toString() const;
 };

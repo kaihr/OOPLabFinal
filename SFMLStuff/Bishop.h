@@ -6,7 +6,8 @@
 
 class Bishop : public Piece {
 public:
-	Bishop(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::BISHOP)
+	Bishop(int row = 0, int col = 0, bool isWhite = true, bool enPassant = false, int hasMoved = 0) : 
+		Piece(row, col, isWhite, Piece::Type::BISHOP, enPassant, hasMoved)
 	{
 		if (_isWhite)
 			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_BISHOP));

@@ -51,6 +51,8 @@ public:
 	friend class PauseState;
 
 	ChessGame(sf::RenderWindow &window);
+	ChessGame(sf::RenderWindow& window, int saveSlot);
+
 	~ChessGame()
 	{
 		assert(_currentChosen == NULL);
@@ -75,5 +77,6 @@ public:
 	void run();
 
 	TERMINATE_CODE outOfMove();
-	// bool staleMate();
+
+	void save(int id);
 };

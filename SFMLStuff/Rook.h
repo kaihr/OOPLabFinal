@@ -5,7 +5,8 @@
 
 class Rook : public Piece {
 public:
-	Rook(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite, Piece::Type::ROOK)
+	Rook(int row = 0, int col = 0, bool isWhite = true, bool enPassant = false, int hasMoved = 0) : 
+		Piece(row, col, isWhite, Piece::Type::ROOK, enPassant, hasMoved)
 	{
 		if (_isWhite)
 			_sprite.setTexture(TextureManager::getTexture(PIECES::WHITE_ROOK));

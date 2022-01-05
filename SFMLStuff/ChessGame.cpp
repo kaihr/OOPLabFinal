@@ -6,6 +6,7 @@
 #include "TerminateState.h"
 
 #include <iostream>
+#include <string>
 
 ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
@@ -53,6 +54,125 @@ ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChose
 	_score[0] = _score[1] = 0;
 
 	_mouseState = new NullState();
+}
+
+ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
+{
+	_gameRunning = false;
+	_isWhiteTurn = false;
+	_mouseState = NULL;
+	_currentChosen = NULL;
+	_preChosen = NULL;
+	_score[0] = _score[1] = 0;
+	
+	for (int i = 0; i < BOARD_SIZE; ++i)
+		for (int j = 0; j < BOARD_SIZE; ++j)
+			_pieces[i][j] = NULL;
+
+	std::ifstream fin(std::to_string(saveSlot) + ".dat");
+
+	if (!fin.good())
+		return;
+
+	std::string buf;
+	
+	std::getline(fin, buf);
+	_isWhiteTurn = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int currentID = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int preID = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int n = std::stoi(buf);
+
+	for (int i = 0; i < n; ++i) {
+		std::getline(fin, buf);
+		std::stringstream ss(buf);
+		int row, col;
+		bool isWhite, enPassant;
+		int hasMove, foo;
+
+		Piece::Type type;
+
+		ss >> row >> col >> isWhite >> enPassant >> hasMove >> foo;
+		type = (Piece::Type)foo;
+
+		Piece* cur = NULL;
+
+		switch (type)
+		{
+		case Piece::Type::PAWN:
+			cur = new Pawn(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::ROOK:
+			cur = new Rook(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::BISHOP:
+			cur = new Bishop(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KNIGHT:
+			cur = new Knight(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::QUEEN:
+			cur = new Queen(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KING:
+			cur = new King(row, col, isWhite, enPassant, hasMove);
+			break;
+		default:
+			break;
+		}
+
+		_pieces[row][col] = cur;
+
+		if (currentID == i)
+			_currentChosen = cur;
+
+		if (preID == i)
+			_preChosen = cur;
+	}
+
+	_time[0].setPosition(600, 0);
+	_time[1].setPosition(600, 600 - TIMER_HEIGHT);
+	
+	for (int i = 0; i < 2; ++i) {
+		std::getline(fin, buf);
+		std::stringstream ss(buf);
+
+		int remainingTime;
+		ss >> remainingTime;
+
+		int temp = remainingTime;
+		int miliseconds = temp % 1000;
+		temp /= 1000;
+		int seconds = temp % 60;
+		temp /= 60;
+		int minutes = temp % 60;
+		temp /= 60;
+		int hours = temp % 1000;
+
+		_time[i].setTimer(FullTime(hours, minutes, seconds, miliseconds));
+	}
+
+	_time[0].start();
+	_time[0].stop();
+
+	_time[1].start();
+	_time[1].stop();
+
+	_time[_isWhiteTurn].start();
+
+	std::getline(fin, buf);
+	_gameRunning = std::stoi(buf);
+
+	_mouseState = new NullState();
+
+	fin.close();
+
+	std::cerr << "send help" << std::endl;
 }
 
 void ChessGame::handleInput()
@@ -189,4 +309,44 @@ ChessGame::TERMINATE_CODE ChessGame::outOfMove()
 
 
 	return TERMINATE_CODE::STALE_MATE;
+}
+
+void ChessGame::save(int id)
+{
+	std::ofstream fout(std::to_string(id) + ".dat");
+
+	if (!fout.good())
+		return;
+
+	std::vector<Piece*> buff;
+	for (int i = 0; i < BOARD_SIZE; ++i)
+		for (int j = 0; j < BOARD_SIZE; ++j)
+			if (_pieces[i][j])
+				buff.push_back(_pieces[i][j]);
+
+	int currentID = -1;
+	int preID = -1;
+
+	for (int i = 0; i < (int)buff.size(); ++i) {
+		if (_preChosen == buff[i])
+			preID = i;
+
+		if (_currentChosen == buff[i])
+			preID = i;
+	}
+
+	fout << _isWhiteTurn << '\n';
+	fout << currentID << '\n';
+	fout << preID << '\n';
+
+	fout << (int)buff.size() << '\n';
+	for (auto piece : buff)
+		fout << piece->toString() << '\n';
+
+	fout << _time[0].toString() << '\n';
+	fout << _time[1].toString() << '\n';
+
+	fout << _gameRunning << '\n';
+
+	fout.close();
 }
