@@ -4,7 +4,6 @@
 #include "MovingPawnState.h"
 #include "MenuState.h"
 #include "PauseState.h"
-#include "ButtonClickState.h"
 
 GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
