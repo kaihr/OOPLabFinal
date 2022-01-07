@@ -10,7 +10,8 @@ private:
 	int _positiveDirection;
 
 public:
-	Pawn(int row = 0, int col = 0, bool isWhite = true) : Piece(row, col, isWhite)
+	Pawn(int row = 0, int col = 0, bool isWhite = true, bool enPassant = false, int hasMoved = 0) : 
+		Piece(row, col, isWhite, Piece::Type::PAWN, enPassant, hasMoved)
 	{
 		_positiveDirection = -1; // White piece move from the bottom row to the top row
 		if (!isWhite)

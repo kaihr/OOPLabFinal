@@ -38,7 +38,7 @@ MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 		if(_button[0]->isMouseOver())
 			return OPTION::START;
 		if (_button[1]->isMouseOver())
-			return OPTION::MENU;
+			return OPTION::LOAD;
 		if (_button[2]->isMouseOver())
 			return OPTION::MENU;
 		if (_button[3]->isMouseOver())

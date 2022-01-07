@@ -5,63 +5,61 @@
 #include <string>
 #include <vector>
 #include "Piece.h"
+#include "Pawn.h"
+#include "King.h"
+#include "Bishop.h"
+#include "Rook.h"
+#include "Knight.h"
+#include "Queen.h"
+#include "ChessGame.h"
 
 class Record{
 private:
-	int _nTurns;
-	std::vector <std::string> history;
 	std::vector <std::vector <std::string>> _piecesHistory;
+public:
+	static char pieceToChar(Piece* piece) {
+		if (!piece) return ' ';
+		if (piece->type() == Piece::Type::BISHOP)
+			return 'b' - piece->isWhite() * 32;
+		if (piece->type() == Piece::Type::PAWN)
+			return 'p' - piece->isWhite() * 32;
+		if (piece->type() == Piece::Type::ROOK)
+			return 'r' - piece->isWhite() * 32;
+		if (piece->type() == Piece::Type::KNIGHT)
+			return 'n' - piece->isWhite() * 32;
+		if (piece->type() == Piece::Type::QUEEN)
+			return 'q' - piece->isWhite() * 32;
+		if (piece->type() == Piece::Type::KING)
+			return 'k' - piece->isWhite() * 32;
+		return ' ';
+	}
+
+	static Piece* charToPiece(char piece, int i, int j) {
+		if (piece == 'p') return new Pawn(i, j, false);
+		else if (piece == 'P') return new Pawn(i, j);
+		else if (piece == 'r') return new Rook(i, j, false);
+		else if (piece == 'R') return new Rook(i, j);
+		else if (piece == 'n') return new Knight(i, j, false);
+		else if (piece == 'N') return new Knight(i, j);
+		else if (piece == 'b') return new Bishop(i, j, false);
+		else if (piece == 'B') return new Bishop(i, j);
+		else if (piece == 'q') return new Queen(i, j, false);
+		else if (piece == 'Q') return new Queen(i, j);
+		else if (piece == 'k') return new King(i, j, false);
+		else if (piece == 'K') return new King(i, j);
+		return NULL;
+	}
+
 public:
 
 	Record(){
-		_nTurns = 0;
-		history.clear();
-		std::vector <std::string> _pieces(8);
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++)
-				_pieces[i] += ' ';
-		for (int i = 0; i < 8; i++) {
-			_pieces[1][i] = 'p';
-			_pieces[6][i] = 'P';
-		}
-
-		_pieces[0][0] = 'r';
-		_pieces[0][7] = 'r';
-		_pieces[7][0] = 'R';
-		_pieces[7][7] = 'R';
-
-		_pieces[0][1] = 'n';
-		_pieces[0][6] = 'n';
-		_pieces[7][1] = 'N';
-		_pieces[7][6] = 'N';
-
-		_pieces[0][2] = 'b';
-		_pieces[0][5] = 'b';
-		_pieces[7][2] = 'B';
-		_pieces[7][5] = 'B';
-
-		_pieces[0][3] = 'q';
-		_pieces[7][3] = 'Q';
-
-		_pieces[0][4] = 'k';
-		_pieces[7][4] = 'K';
-
-		_piecesHistory.push_back(_pieces);
+		_piecesHistory.clear();
 	}
 
-	Record(std::string filePath){
-		loadFromFile(filePath);
-	}
-
-	void addMove(std::string str) {
-		history.push_back(str);
-		int fromRow = str[1] - 48;
-		int fromCol = str[2] - 48;
-		int toRow = str[3] - 48;
-		int toCol = str[4] - 48;
+	void addMove(Piece* piece, int fromRow, int fromCol, int toRow, int toCol) {
 
 		std::vector <std::string> _pieces = _piecesHistory[_piecesHistory.size() - 1];
-		_pieces[toRow][toCol] = _pieces[fromRow][fromCol];
+		_pieces[toRow][toCol] = pieceToChar(piece);
 		_pieces[fromRow][fromCol] = ' ';
 		_piecesHistory.push_back(_pieces);
 
@@ -69,33 +67,22 @@ public:
 		std::cout << '\n';
 	}
 
-	void undo(){
-		if (history.size() == 0) return;
-		history.pop_back();
-		_piecesHistory.pop_back();
+	void reset(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
+		_piecesHistory.clear();
+		std::vector <std::string> _str(BOARD_SIZE);
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for (int j = 0; j < BOARD_SIZE; j++)
+				_str[i] += pieceToChar(_pieces[i][j]);
+		_piecesHistory.push_back(_str);
+	}
 
+	bool undo() {
+		if (_piecesHistory.size() < 2) return false;
+		_piecesHistory.pop_back();
+		return true;
 	}
 
 	char pieceAt(int row, int col){
 		return _piecesHistory[_piecesHistory.size() - 1][row][col];
 	}
-
-	void saveToFile(std::string filePath){
-		std::ofstream f(filePath);
-		f << _nTurns << '\n';
-		for (int i = 0; i < _nTurns; i++)
-			f << history[i] << '\n';
-		f.close();
-	}
-
-	void loadFromFile(std::string filePath){
-		history.clear();
-		std::ifstream f(filePath);
-		f >> _nTurns;
-		history.resize(_nTurns);
-		for (int i = 0; i < _nTurns; i++)
-			f >> history[i];
-		f.close();
-	}
-
 };

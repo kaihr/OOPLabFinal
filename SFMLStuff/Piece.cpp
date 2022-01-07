@@ -1,77 +1,7 @@
 #include <iostream>
+#include <sstream>
 
 #include "Piece.h"
-
-/*
-Piece* Piece::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
-{
-	if (event.type == sf::Event::MouseButtonPressed) {
-		if (event.mouseButton.button == sf::Mouse::Left) {
-			sf::Vector2i curCell = Utility::getCell(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
-			int nextRow = curCell.x;
-			int nextCol = curCell.y;
-
-			bool isIn = (0 <= nextRow && nextRow < BOARD_SIZE && 0 <= nextCol && nextCol < BOARD_SIZE);
-			bool isSame = (nextRow == _row && nextCol == _col);
-
-			if ((!isSame) && isIn && validCell(nextRow, nextCol, pieces)) {
-				if (pieces[nextRow][nextCol]) {
-					delete pieces[nextRow][nextCol];
-					pieces[nextRow][nextCol] = NULL;
-				}
-
-				pieces[nextRow][nextCol] = pieces[_row][_col];
-				pieces[_row][_col] = NULL;
-
-				_row = nextRow;
-				_col = nextCol;
-				_hasMoved = true;
-			}
-
-			_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
-			return NULL;
-		}
-	}
-
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::Escape)
-			_sprite.setPosition(_col * CELL_LENGTH, _row * CELL_LENGTH);
-
-		return NULL;
-	}
-
-	return this;
-}
-*/
-
-std::string Piece::moveToString(int fromRow, int fromCol, int toRow, int toCol){
-	std::string str;
-	switch (_type){
-		case Piece::Type::PAWN:
-			str += "P";
-			break;
-		case Piece::Type::KING:
-			str += "K";
-			break;
-		case Piece::Type::QUEEN:
-			str += "Q";
-			break;
-		case Piece::Type::BISHOP:
-			str += "B";
-			break;
-		case Piece::Type::KNIGHT:
-			str += "N";
-			break;
-		case Piece::Type::ROOK:
-			str += "R";
-			break;
-	}
-	str += char(fromRow + 48);
-	str += char(fromCol + 48);
-	str += char(toRow + 48);
-	str += char(toCol + 48);
-	return str;
-}
 
 bool Piece::putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
@@ -117,4 +47,12 @@ bool Piece::putKingInDanger(int fromRow, int fromCol, int toRow, int toCol, Piec
 bool Piece::validAndNotInCheck(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
 {
 	return validCell(nextRow, nextCol, pieces) && !putKingInDanger(_row, _col, nextRow, nextCol, pieces);
+}
+
+std::string Piece::toString() const
+{
+	std::stringstream ss;
+	ss << _row << " " << _col << " " << _isWhite << " " << _enPassant << " " << _hasMoved << " " << (int)_type;
+
+	return ss.str();
 }

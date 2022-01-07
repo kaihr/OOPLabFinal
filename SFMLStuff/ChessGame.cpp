@@ -6,6 +6,8 @@
 #include "TerminateState.h"
 
 #include <iostream>
+#include <string>
+#include <fstream>
 
 ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
@@ -55,8 +57,130 @@ ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChose
 	_pieces[7][4] = new King(7, 4);
 
 	_score[0] = _score[1] = 0;
+	_record.reset(_pieces);
 
 	_mouseState = new NullState();
+}
+
+ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
+{
+	_gameRunning = false;
+	_isWhiteTurn = false;
+	_mouseState = NULL;
+	_currentChosen = NULL;
+	_preChosen = NULL;
+	_score[0] = _score[1] = 0;
+
+	for (int i = 0; i < BOARD_SIZE; ++i)
+		for (int j = 0; j < BOARD_SIZE; ++j)
+			_pieces[i][j] = NULL;
+
+	std::ifstream fin(std::to_string(saveSlot) + ".dat");
+
+	if (!fin.good())
+		return;
+
+	std::string buf;
+
+	std::getline(fin, buf);
+	_isWhiteTurn = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int currentID = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int preID = std::stoi(buf);
+
+	std::getline(fin, buf);
+	int n = std::stoi(buf);
+
+	for (int i = 0; i < n; ++i) {
+		std::getline(fin, buf);
+		std::stringstream ss(buf);
+		int row, col;
+		bool isWhite, enPassant;
+		int hasMove, foo;
+
+		Piece::Type type;
+
+		ss >> row >> col >> isWhite >> enPassant >> hasMove >> foo;
+		type = (Piece::Type)foo;
+
+		Piece* cur = NULL;
+
+		switch (type)
+		{
+		case Piece::Type::PAWN:
+			cur = new Pawn(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::ROOK:
+			cur = new Rook(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::BISHOP:
+			cur = new Bishop(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KNIGHT:
+			cur = new Knight(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::QUEEN:
+			cur = new Queen(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KING:
+			cur = new King(row, col, isWhite, enPassant, hasMove);
+			break;
+		default:
+			break;
+		}
+
+		_pieces[row][col] = cur;
+
+		if (currentID == i)
+			_currentChosen = cur;
+
+		if (preID == i)
+			_preChosen = cur;
+	}
+
+	_time[0].setPosition(600, 0);
+	_time[1].setPosition(600, 600 - TIMER_HEIGHT);
+
+	for (int i = 0; i < 2; ++i) {
+		std::getline(fin, buf);
+		std::stringstream ss(buf);
+
+		int remainingTime;
+		ss >> remainingTime;
+
+		int temp = remainingTime;
+		int miliseconds = temp % 1000;
+		temp /= 1000;
+		int seconds = temp % 60;
+		temp /= 60;
+		int minutes = temp % 60;
+		temp /= 60;
+		int hours = temp % 1000;
+
+		_time[i].setTimer(FullTime(hours, minutes, seconds, miliseconds));
+	}
+
+	_time[0].start();
+	_time[0].stop();
+
+	_time[1].start();
+	_time[1].stop();
+
+	_time[_isWhiteTurn].start();
+
+	_record.reset(_pieces);
+
+	std::getline(fin, buf);
+	_gameRunning = std::stoi(buf);
+
+	_mouseState = new NullState();
+
+	fin.close();
+
+	std::cerr << "send help" << std::endl;
 }
 
 void ChessGame::handleInput()
@@ -112,29 +236,16 @@ void ChessGame::switchState(GameState* newState)
 
 void ChessGame::handleButton(int btnId)
 {
-	if (btnId == 0) {
+	if (btnId == 0 && _record.undo()) {
 		_isWhiteTurn ^= 1;
-		_record.undo();
-		for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++){
+		for (int i = 0; i < BOARD_SIZE; i++)
+		for (int j = 0; j < BOARD_SIZE; j++){
 			delete _pieces[i][j];
-			_pieces[i][j] = NULL;
-			char piece = _record.pieceAt(i, j);
-
-			if (piece == 'p') _pieces[i][j] = new Pawn(i, j, false);
-			else if (piece == 'P') _pieces[i][j] = new Pawn(i, j);
-			else if (piece == 'r') _pieces[i][j] = new Rook(i, j, false);
-			else if (piece == 'R') _pieces[i][j] = new Rook(i, j);
-			else if (piece == 'n') _pieces[i][j] = new Knight(i, j, false);
-			else if (piece == 'N') _pieces[i][j] = new Knight(i, j);
-			else if (piece == 'b') _pieces[i][j] = new Bishop(i, j, false);
-			else if (piece == 'B') _pieces[i][j] = new Bishop(i, j);
-			else if (piece == 'q') _pieces[i][j] = new Queen(i, j, false);
-			else if (piece == 'Q') _pieces[i][j] = new Queen(i, j);
-			else if (piece == 'k') _pieces[i][j] = new King(i, j, false);
-			else if (piece == 'K') _pieces[i][j] = new King(i, j);
+			_pieces[i][j] = Record::charToPiece(_record.pieceAt(i, j), i, j);
 		}
 	}
+
+	if (btnId == 1) _gameRunning = false;
 }
 
 void ChessGame::update() {
@@ -226,4 +337,44 @@ ChessGame::TERMINATE_CODE ChessGame::outOfMove()
 
 
 	return TERMINATE_CODE::STALE_MATE;
+}
+
+void ChessGame::save(int id)
+{
+	std::ofstream fout(std::to_string(id) + ".dat");
+
+	if (!fout.good())
+		return;
+
+	std::vector<Piece*> buff;
+	for (int i = 0; i < BOARD_SIZE; ++i)
+		for (int j = 0; j < BOARD_SIZE; ++j)
+			if (_pieces[i][j])
+				buff.push_back(_pieces[i][j]);
+
+	int currentID = -1;
+	int preID = -1;
+
+	for (int i = 0; i < (int)buff.size(); ++i) {
+		if (_preChosen == buff[i])
+			preID = i;
+
+		if (_currentChosen == buff[i])
+			preID = i;
+	}
+
+	fout << _isWhiteTurn << '\n';
+	fout << currentID << '\n';
+	fout << preID << '\n';
+
+	fout << (int)buff.size() << '\n';
+	for (auto piece : buff)
+		fout << piece->toString() << '\n';
+
+	fout << _time[0].toString() << '\n';
+	fout << _time[1].toString() << '\n';
+
+	fout << _gameRunning << '\n';
+
+	fout.close();
 }

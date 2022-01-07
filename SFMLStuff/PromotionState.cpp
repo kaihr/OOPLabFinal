@@ -7,6 +7,7 @@ GameState* PromotionState::handleInput(const sf::Event& event, ChessGame& owner)
 
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (_button[0]->isMouseOver()) {
+
 			delete owner._pieces[_row][_col];
 			owner._pieces[_row][_col] = new Queen(_row, _col, owner._isWhiteTurn);
 			ans = new NullState();
@@ -29,8 +30,10 @@ GameState* PromotionState::handleInput(const sf::Event& event, ChessGame& owner)
 			owner._pieces[_row][_col] = new Bishop(_row, _col, owner._isWhiteTurn);
 			ans = new NullState();
 		}
-	}
 
+		if (ans)
+			owner._record.addMove(owner._pieces[_row][_col], _preRow, _preCol, _row, _col);
+	}
 	return ans;
 }
 

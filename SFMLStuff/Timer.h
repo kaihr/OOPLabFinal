@@ -1,12 +1,13 @@
 #pragma once
 
+#include <sstream>
 #include <string>
 #include <chrono>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
-using namespace std::chrono;
 
+using namespace std::chrono;
 #define time std::chrono::time_point<std::chrono::high_resolution_clock>
 
 const float TIMER_WIDTH = 200;
@@ -35,6 +36,8 @@ struct FullTime {
 			_seconds * 1000 +
 			_miliseconds;
 	}
+
+
 	std::string toString() const {
 		std::string res = "";
 		if (_hours){
@@ -74,7 +77,26 @@ protected:
 	sf::RectangleShape _rect;
 
 public:
+	Timer(int remainingTime, bool isActive, float left, float top) : Timer() {
+		std::cerr << "In";
+		setPosition(left, top);
+
+		_remainingTime = remainingTime;
+		_text.setString(getRemainingTime().toString());
+
+		_isActive = isActive;
+	};
+
+	std::string toString() const {
+		std::stringstream ss;
+
+		ss << _remainingTime;
+
+		return ss.str();
+	}
+
 	Timer() {
+		_tick = high_resolution_clock::now();
 		_text.setCharacterSize(FONT_SIZE);
 		_font.loadFromFile("Assets\\arial.ttf");
 		_text.setFont(_font);

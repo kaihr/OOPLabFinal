@@ -32,6 +32,12 @@ int main()
 			game.run();
 		}
 
+		if (mode == MenuState::OPTION::LOAD) {
+			std::cout << "WTf" << '\n';
+			ChessGame game(window, 1);
+			game.run();
+		}
+
 		if (mode == MenuState::OPTION::EXIT) {
 			window.close();
 		}

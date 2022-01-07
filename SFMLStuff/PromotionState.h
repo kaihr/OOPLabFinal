@@ -7,9 +7,13 @@ class PromotionState : public MovingState {
 private:
 	Button* _text;
 	Button* _button[4];
+	int _preRow, _preCol;
 
 public:
-	PromotionState(int row, int col) : MovingState(row, col) {	
+	PromotionState(int preRow, int preCol, int row, int col) : MovingState(row, col) {
+		_preRow = preRow;
+		_preCol = preCol;
+
 		int top = 100;
 		_text = new Button(sf::Vector2f(420, MENU_OPTION_HEIGHT), RECT_COLOR, "PROMOTION", 60, sf::Color::Blue, 300, top);
 
