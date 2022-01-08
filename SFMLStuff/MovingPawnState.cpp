@@ -42,8 +42,6 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				owner._pieces[cell.x][cell.y] = owner._currentChosen;
 				owner._currentChosen->setPos(cell.x, cell.y);
 
-				owner._record.addMove(owner._currentChosen, _row, _col, cell.x, cell.y);
-
 				acceptMove(owner);
 				owner._preChosen->switchEnPassant();
 				return new NullState();

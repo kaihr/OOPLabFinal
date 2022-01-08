@@ -237,12 +237,15 @@ void ChessGame::switchState(GameState* newState)
 void ChessGame::handleButton(int btnId)
 {
 	if (btnId == 0 && _record.undo()) {
+		_time[_isWhiteTurn].stop();
 		_isWhiteTurn ^= 1;
+		_time[_isWhiteTurn].start();
 		for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++){
 			delete _pieces[i][j];
-			_pieces[i][j] = Record::charToPiece(_record.pieceAt(i, j), i, j);
+			_pieces[i][j] = Record::decodePiece(_record.pieceAt(i, j), i, j);
 		}
+		_preChosen = _record.preChosen(_pieces);
 	}
 
 	if (btnId == 1) _gameRunning = false;

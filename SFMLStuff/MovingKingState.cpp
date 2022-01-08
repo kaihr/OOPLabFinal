@@ -30,8 +30,6 @@ GameState* MovingKingState::handleInput(const sf::Event& event, ChessGame& owner
 				owner._pieces[cell.x][0] = NULL;
 			}
 
-			owner._record.addMove(owner._currentChosen, _row, _col, cell.x, cell.y);
-
 			acceptMove(owner);
 			return new NullState();
 		}

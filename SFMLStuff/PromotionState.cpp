@@ -31,8 +31,8 @@ GameState* PromotionState::handleInput(const sf::Event& event, ChessGame& owner)
 			ans = new NullState();
 		}
 
-		if (ans)
-			owner._record.addMove(owner._pieces[_row][_col], _preRow, _preCol, _row, _col);
+		//if (ans)
+			//owner._record.addMove(owner._pieces, owner._preChosen);
 	}
 	return ans;
 }

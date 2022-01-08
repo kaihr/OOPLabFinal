@@ -21,7 +21,7 @@ protected:
 	int _row, _col;
 	bool _isWhite;
 	bool _enPassant;
-	int _hasMoved; //For castling and pawn movement
+	bool _hasMoved; //For castling and pawn movement
 	Type _type;
 
 	sf::Sprite _sprite;
@@ -61,10 +61,13 @@ public:
 	};
 
 public:
-	bool enPassant() { return _enPassant; };
-	int hasMoved() { return _hasMoved; };
+	int row() { return _row; }
+	int col() { return _col; }
 
-	void markAsMoved() { ++_hasMoved; };
+	bool enPassant() { return _enPassant; };
+	bool hasMoved() { return _hasMoved; };
+
+	void markAsMoved() { _hasMoved |= 1; };
 	void switchEnPassant() { _enPassant ^= 1; };
 
 	Type type() { return _type; };

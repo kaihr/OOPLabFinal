@@ -15,70 +15,99 @@
 
 class Record{
 private:
-	std::vector <std::vector <std::string>> _piecesHistory;
+	std::vector <std::vector <std::vector <int>>> _piecesHistory;
+	std::vector <std::pair <int, int>> _preChosenHistory;
 public:
-	static char pieceToChar(Piece* piece) {
-		if (!piece) return ' ';
-		if (piece->type() == Piece::Type::BISHOP)
-			return 'b' - piece->isWhite() * 32;
-		if (piece->type() == Piece::Type::PAWN)
-			return 'p' - piece->isWhite() * 32;
-		if (piece->type() == Piece::Type::ROOK)
-			return 'r' - piece->isWhite() * 32;
-		if (piece->type() == Piece::Type::KNIGHT)
-			return 'n' - piece->isWhite() * 32;
-		if (piece->type() == Piece::Type::QUEEN)
-			return 'q' - piece->isWhite() * 32;
-		if (piece->type() == Piece::Type::KING)
-			return 'k' - piece->isWhite() * 32;
-		return ' ';
+	static int encodePiece(Piece* piece) {
+		if (!piece) return -1;
+		return char((int)piece->type() * 10 + (piece->isWhite() << 2) + (piece->enPassant() << 1) + (piece->hasMoved() > 0));
 	}
-
-	static Piece* charToPiece(char piece, int i, int j) {
-		if (piece == 'p') return new Pawn(i, j, false);
-		else if (piece == 'P') return new Pawn(i, j);
-		else if (piece == 'r') return new Rook(i, j, false);
-		else if (piece == 'R') return new Rook(i, j);
-		else if (piece == 'n') return new Knight(i, j, false);
-		else if (piece == 'N') return new Knight(i, j);
-		else if (piece == 'b') return new Bishop(i, j, false);
-		else if (piece == 'B') return new Bishop(i, j);
-		else if (piece == 'q') return new Queen(i, j, false);
-		else if (piece == 'Q') return new Queen(i, j);
-		else if (piece == 'k') return new King(i, j, false);
-		else if (piece == 'K') return new King(i, j);
-		return NULL;
+	static Piece* decodePiece(int piece, int row, int col) {
+		if (piece == -1) return NULL;
+		Piece::Type type = (Piece::Type)(piece / 10);
+		bool isWhite = ((piece % 10) >> 2) & 1;
+		bool enPassant = ((piece % 10) >> 1) & 1;
+		bool hasMove = (piece % 10) & 1;
+		Piece* cur = NULL;
+		switch (type)
+		{
+		case Piece::Type::PAWN:
+			cur = new Pawn(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::ROOK:
+			cur = new Rook(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::BISHOP:
+			cur = new Bishop(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KNIGHT:
+			cur = new Knight(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::QUEEN:
+			cur = new Queen(row, col, isWhite, enPassant, hasMove);
+			break;
+		case Piece::Type::KING:
+			cur = new King(row, col, isWhite, enPassant, hasMove);
+			break;
+		}
+		if (cur == NULL) std::cout << "wtf\n";
+		return cur;
 	}
 
 public:
 
 	Record(){
 		_piecesHistory.clear();
+		_preChosenHistory.clear();
 	}
 
-	void addMove(Piece* piece, int fromRow, int fromCol, int toRow, int toCol) {
+	void addMove(Piece* _pieces[BOARD_SIZE][BOARD_SIZE], Piece* preChosen) {
 
-		std::vector <std::string> _pieces = _piecesHistory[_piecesHistory.size() - 1];
-		_pieces[toRow][toCol] = pieceToChar(piece);
-		_pieces[fromRow][fromCol] = ' ';
-		_piecesHistory.push_back(_pieces);
+		std::vector <std::vector <int>> table(BOARD_SIZE);
+		for (int i = 0; i < BOARD_SIZE; i++)
+			for (int j = 0; j < BOARD_SIZE; j++)
+				table[i].push_back(encodePiece(_pieces[i][j]));
+		_piecesHistory.push_back(table);
 
-		for (int i = 0; i < 8; i++) std::cout << _pieces[i] << '\n';
+		if (!preChosen)
+			_preChosenHistory.push_back(std::make_pair(-1, -1));
+		else
+			_preChosenHistory.push_back(std::make_pair(preChosen->row(), preChosen->col()));
+
+
+		if (!preChosen)
+			std::cout << -1 << ' ' << -1 << '\n';
+		else
+			std::cout << preChosen->row() << ' ' << preChosen->col() << '\n';
+
+		for (int i = 0; i < 8; i++, std::cout << '\n')
+			for (int j = 0; j < 8; j++)
+				std::cout << table[i][j] << ' ';
 		std::cout << '\n';
 	}
 
 	void reset(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
 		_piecesHistory.clear();
-		std::vector <std::string> _str(BOARD_SIZE);
+		std::vector <std::vector <int>> table(BOARD_SIZE);
 		for (int i = 0; i < BOARD_SIZE; i++)
 			for (int j = 0; j < BOARD_SIZE; j++)
-				_str[i] += pieceToChar(_pieces[i][j]);
-		_piecesHistory.push_back(_str);
+				table[i].push_back(encodePiece(_pieces[i][j]));
+		_piecesHistory.push_back(table);
+		_preChosenHistory.push_back(std::make_pair(-1, -1));
+	}
+
+	Piece* preChosen(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
+		std::pair <int, int> preChosenPos = _preChosenHistory[_preChosenHistory.size() - 1];
+		std::cout << preChosenPos.first << ' ' << preChosenPos.second << '\n';
+		if (preChosenPos.first == -1)
+			return NULL;
+		return _pieces[preChosenPos.first][preChosenPos.second];
 	}
 
 	bool undo() {
 		if (_piecesHistory.size() < 2) return false;
 		_piecesHistory.pop_back();
+		_preChosenHistory.pop_back();
 		return true;
 	}
 

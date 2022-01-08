@@ -26,7 +26,6 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 			owner._pieces[cell.x][cell.y] = owner._currentChosen;
 			owner._currentChosen->setPos(cell.x, cell.y);
 
-			owner._record.addMove(owner._currentChosen, _row, _col, cell.x, cell.y);
 			acceptMove(owner);
 			return new NullState();
 		}
@@ -80,6 +79,7 @@ void MovingState::acceptMove(ChessGame& owner)
 		owner._preChosen->switchEnPassant();
 
 	owner._preChosen = owner._currentChosen;
+	owner._record.addMove(owner._pieces, owner._preChosen);
 }
 
 /*
