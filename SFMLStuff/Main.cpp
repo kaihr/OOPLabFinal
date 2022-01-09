@@ -7,11 +7,23 @@
 #include <iostream>
 
 TextureManager *TextureManager::instance = NULL;
+const Timer::FullTime CONFIG_TIME[N_CONFIG_BUTTON] = {
+	Timer::FullTime(2, 0, 0),
+	Timer::FullTime(1, 0, 0),
+	Timer::FullTime(0, 30, 0),
+	Timer::FullTime(0, 15, 0),
+	Timer::FullTime(0, 10, 0),
+	Timer::FullTime(0, 5, 0),
+	Timer::FullTime(0, 3, 0),
+	Timer::FullTime(0, 2, 0),
+	Timer::FullTime(0, 1, 0),
+};
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Chess", sf::Style::Titlebar | sf::Style::Close);
-	MenuState menu(window);
+	int configID;
+	MenuState menu(window, configID);
 
 	while (window.isOpen()) {
 		sf::Event event;
@@ -28,7 +40,7 @@ int main()
 			menu.draw();
 
 		if (mode == MenuState::OPTION::START) {
-			ChessGame game(window);
+			ChessGame game(window, CONFIG_TIME[configID]);
 			game.run();
 		}
 

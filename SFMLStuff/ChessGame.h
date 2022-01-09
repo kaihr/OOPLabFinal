@@ -52,7 +52,7 @@ public:
 	friend class PromotionState;
 	friend class PauseState;
 
-	ChessGame(sf::RenderWindow &window);
+	ChessGame(sf::RenderWindow &window, Timer::FullTime configTime);
 	ChessGame(sf::RenderWindow& window, int saveSlot);
 
 	~ChessGame()

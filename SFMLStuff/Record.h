@@ -74,16 +74,6 @@ public:
 		else
 			_preChosenHistory.push_back(std::make_pair(preChosen->row(), preChosen->col()));
 
-
-		if (!preChosen)
-			std::cout << -1 << ' ' << -1 << '\n';
-		else
-			std::cout << preChosen->row() << ' ' << preChosen->col() << '\n';
-
-		for (int i = 0; i < 8; i++, std::cout << '\n')
-			for (int j = 0; j < 8; j++)
-				std::cout << table[i][j] << ' ';
-		std::cout << '\n';
 	}
 
 	void reset(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
@@ -98,7 +88,6 @@ public:
 
 	Piece* preChosen(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
 		std::pair <int, int> preChosenPos = _preChosenHistory[_preChosenHistory.size() - 1];
-		std::cout << preChosenPos.first << ' ' << preChosenPos.second << '\n';
 		if (preChosenPos.first == -1)
 			return NULL;
 		return _pieces[preChosenPos.first][preChosenPos.second];

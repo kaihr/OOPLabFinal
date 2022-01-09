@@ -9,14 +9,15 @@
 #include <string>
 #include <fstream>
 
-ChessGame::ChessGame(sf::RenderWindow &window) : _currentChosen(NULL), _preChosen(NULL), _window(window)
+ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
+
 	_isWhiteTurn = true;
 	_gameRunning = true;
 
-	_time[0].setTimer(FullTime(0, 1, 0));
+	_time[0].setTimer(configTime);
 	_time[0].setPosition(600, 0);
-	_time[1].setTimer(FullTime(0, 1, 0));
+	_time[1].setTimer(configTime);
 	_time[1].setPosition(600, 600 - TIMER_HEIGHT);
 	_time[0].start();
 	_time[0].stop();
@@ -160,7 +161,7 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 		temp /= 60;
 		int hours = temp % 1000;
 
-		_time[i].setTimer(FullTime(hours, minutes, seconds, miliseconds));
+		_time[i].setTimer(Timer::FullTime(hours, minutes, seconds, miliseconds));
 	}
 
 	_time[0].start();

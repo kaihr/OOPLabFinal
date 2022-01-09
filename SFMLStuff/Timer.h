@@ -17,53 +17,6 @@ const sf::Color WHITE_INACTIVE(175, 175, 175);
 const int FONT_SIZE = 28;
 const int OUTLINE_THICKNESS = 2;
 
-struct FullTime {
-	int _hours;
-	int _minutes;
-	int _seconds;
-	int _miliseconds;
-
-	FullTime(int hours, int minutes, int seconds, int miliseconds = 0) {
-		_hours = hours;
-		_minutes = minutes;
-		_seconds = seconds;
-		_miliseconds = miliseconds;
-	}
-
-	int toMiliseconds() {
-		return _hours * 60 * 60 * 1000 +
-			_minutes * 60 * 1000 +
-			_seconds * 1000 +
-			_miliseconds;
-	}
-
-
-	std::string toString() const {
-		std::string res = "";
-		if (_hours){
-			if (_hours < 10) res += "0";
-			res += std::to_string(_hours);
-			res += ":";
-		}
-		else if (_minutes)
-			res += "0:";
-		if (_hours || _minutes){
-			if (_minutes < 10) res += "0";
-			res += std::to_string(_minutes);
-			res += ":";
-		}
-		else
-			res += "0:";
-		if (_seconds < 10) res += "0";
-		res += std::to_string(_seconds);
-		if (!_hours && !_minutes){
-			res += ".";
-			res += std::to_string(_miliseconds / 10);
-		}
-		return res;
-	}
-};
-
 class Timer: public sf::Drawable, public sf::Transformable {
 private:
 	int _remainingTime;   // in milisecond
@@ -75,6 +28,53 @@ protected:
 	sf::Text _text;
 	sf::Font _font;
 	sf::RectangleShape _rect;
+public:
+	struct FullTime {
+		int _hours;
+		int _minutes;
+		int _seconds;
+		int _miliseconds;
+
+		FullTime(int hours, int minutes, int seconds, int miliseconds = 0) {
+			_hours = hours;
+			_minutes = minutes;
+			_seconds = seconds;
+			_miliseconds = miliseconds;
+		}
+
+		int toMiliseconds() {
+			return _hours * 60 * 60 * 1000 +
+				_minutes * 60 * 1000 +
+				_seconds * 1000 +
+				_miliseconds;
+		}
+
+
+		std::string toString() const {
+			std::string res = "";
+			if (_hours){
+				if (_hours < 10) res += "0";
+				res += std::to_string(_hours);
+				res += ":";
+			}
+			else if (_minutes)
+				res += "0:";
+			if (_hours || _minutes){
+				if (_minutes < 10) res += "0";
+				res += std::to_string(_minutes);
+				res += ":";
+			}
+			else
+				res += "0:";
+			if (_seconds < 10) res += "0";
+			res += std::to_string(_seconds);
+			if (!_hours && !_minutes){
+				res += ".";
+				res += std::to_string(_miliseconds / 10);
+			}
+			return res;
+		}
+	};
 
 public:
 	Timer(int remainingTime, bool isActive, float left, float top) : Timer() {
