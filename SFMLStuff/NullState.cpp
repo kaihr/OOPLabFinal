@@ -11,7 +11,7 @@ GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 
 		sf::Vector2i mousePos = sf::Mouse::getPosition(owner._window);
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < ChessGame::N_BUTTONS; i++)
 			if (owner._button[i]->isMouseOver(mousePos))
 				owner.handleButton(i);
 

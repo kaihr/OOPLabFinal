@@ -26,6 +26,7 @@ ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _cu
 	_button[0] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Undo", 35, sf::Color::Black, 700, 220);
 	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Save", 35, sf::Color::Black, 700, 300);
 	_button[2] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Exit", 35, sf::Color::Black, 700, 380);
+	_button[3] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Resign", 35, sf::Color::Black, 700, 140);
 
 	for (int i = 0; i < 8; i++)
 		for (int j = 0; j < 8; j++)
@@ -75,6 +76,7 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 	_button[0] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Undo", 35, sf::Color::Black, 700, 220);
 	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Save", 35, sf::Color::Black, 700, 300);
 	_button[2] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Exit", 35, sf::Color::Black, 700, 380);
+	_button[3] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Resign", 35, sf::Color::Black, 700, 140);
 
 	for (int i = 0; i < BOARD_SIZE; ++i)
 		for (int j = 0; j < BOARD_SIZE; ++j)
@@ -220,7 +222,7 @@ void ChessGame::draw()
 
 	_mouseState->draw(*this);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 		_window.draw(*_button[i]);
 
 	_window.display();
@@ -258,13 +260,17 @@ void ChessGame::handleButton(int btnId)
 
 	if (btnId == 2)
 		_gameRunning = false;
+
+	if (btnId == 3) {
+		switchState(new TerminateState(_isWhiteTurn ? "Black win" : "White win"));
+	}
 }
 
 void ChessGame::update() {
 	_mouseState->update(*this);
 	_time[_isWhiteTurn].update();
 	sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < N_BUTTONS; i++)
 		_button[i]->update(mousePos);
 }
 

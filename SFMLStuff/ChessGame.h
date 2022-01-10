@@ -20,6 +20,9 @@ class GameState;
 
 class ChessGame {
 private:
+	const static int N_BUTTONS = 4;
+
+private:
 	ChessBoard _board;
 	Piece* _pieces[BOARD_SIZE][BOARD_SIZE];
 	Piece* _currentChosen;
@@ -31,7 +34,7 @@ private:
 	GameState* _mouseState;
 	Record _record;
 	bool _gameRunning;
-	Button* _button[3];
+	Button* _button[N_BUTTONS];
 
 public:
 	enum class TERMINATE_CODE {
