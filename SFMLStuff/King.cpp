@@ -40,7 +40,7 @@ bool King::validAndNotInCheck(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE
 		if (_col < nextCol)
 			delta = 1;
 
-		int pathCol = _col + delta;
+		int pathCol = _col;
 
 		while (true) {
 			std::swap(pieces[_row][_col], pieces[nextRow][pathCol]);
