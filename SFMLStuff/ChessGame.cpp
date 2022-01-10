@@ -24,7 +24,7 @@ ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _cu
 	_time[1].start();
 
 	_button[0] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Undo", 35, sf::Color::Black, 700, 220);
-	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Menu", 35, sf::Color::Black, 700, 300);
+	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Save", 35, sf::Color::Black, 700, 300);
 	_button[2] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Exit", 35, sf::Color::Black, 700, 380);
 
 	for (int i = 0; i < 8; i++)
@@ -58,7 +58,7 @@ ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _cu
 	_pieces[7][4] = new King(7, 4);
 
 	_score[0] = _score[1] = 0;
-	_record.reset(_pieces);
+	//_record.reset(_pieces);
 
 	_mouseState = new NullState();
 }
@@ -71,6 +71,10 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 	_currentChosen = NULL;
 	_preChosen = NULL;
 	_score[0] = _score[1] = 0;
+
+	_button[0] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Undo", 35, sf::Color::Black, 700, 220);
+	_button[1] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Save", 35, sf::Color::Black, 700, 300);
+	_button[2] = new Button(sf::Vector2f(120, 50), RECT_COLOR, "Exit", 35, sf::Color::Black, 700, 380);
 
 	for (int i = 0; i < BOARD_SIZE; ++i)
 		for (int j = 0; j < BOARD_SIZE; ++j)
@@ -172,7 +176,7 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 
 	_time[_isWhiteTurn].start();
 
-	_record.reset(_pieces);
+	// _record.reset(_pieces);
 
 	std::getline(fin, buf);
 	_gameRunning = std::stoi(buf);
@@ -180,33 +184,29 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 	_mouseState = new NullState();
 
 	fin.close();
-
-	std::cerr << "send help" << std::endl;
 }
 
 void ChessGame::handleInput()
 {
 	TERMINATE_CODE code = outOfMove();
 	if (code == TERMINATE_CODE::CHECK_MATE) {
-		switchState(new TerminateState());
+		switchState(new TerminateState(_isWhiteTurn ? "Black win" : "White win"));
 	}
 
 	if (code == TERMINATE_CODE::STALE_MATE) {
-		switchState(new TerminateState());
+		switchState(new TerminateState("Stale mate"));
 	}
 
 	if (!_time[_isWhiteTurn].update()) {
-		switchState(new TerminateState());
+		switchState(new TerminateState(_isWhiteTurn ? "Black win" : "White win"));
 	}
 
 	sf::Event event;
 
 	while (_window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed) {
-			switchState(new TerminateState());
+		if (event.type == sf::Event::Closed)
 			_gameRunning = false;
-		}
 
 		GameState *tmp = _mouseState->handleInput(event, *this);
 		if (tmp)
@@ -228,8 +228,10 @@ void ChessGame::draw()
 
 void ChessGame::switchState(GameState* newState)
 {
-	_mouseState->quit(*this);
-	delete _mouseState;
+	if (_mouseState) {
+		_mouseState->quit(*this);
+		delete _mouseState;
+	}
 
 	_mouseState = newState;
 	_mouseState->entry(*this);
@@ -237,7 +239,7 @@ void ChessGame::switchState(GameState* newState)
 
 void ChessGame::handleButton(int btnId)
 {
-	if (btnId == 0 && _record.undo()) {
+	if (btnId == 0 && _record.canUndo()) {
 		_time[_isWhiteTurn].stop();
 		_isWhiteTurn ^= 1;
 		_time[_isWhiteTurn].start();
@@ -247,9 +249,15 @@ void ChessGame::handleButton(int btnId)
 			_pieces[i][j] = Record::decodePiece(_record.pieceAt(i, j), i, j);
 		}
 		_preChosen = _record.preChosen(_pieces);
+
+		_record.undo();
 	}
 
-	if (btnId == 1) _gameRunning = false;
+	if (btnId == 1)
+		save(1);
+
+	if (btnId == 2)
+		_gameRunning = false;
 }
 
 void ChessGame::update() {
@@ -267,36 +275,6 @@ void ChessGame::run()
 		update();
 		draw();
 	}
-
-	Button* button = new Button(sf::Vector2f(400, MENU_OPTION_HEIGHT), RECT_COLOR, "Back to menu", 50, sf::Color::Black, 300, 300);
-
-	_gameRunning = true;
-
-	while (_gameRunning) {
-		sf::Event event;
-		while (_window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				_gameRunning = false;
-		}
-
-		if (event.type == sf::Event::MouseButtonPressed) {
-			if (button->isMouseOver())
-				_gameRunning = false;
-		}
-
-		button->update(sf::Mouse::getPosition(_window));
-
-		_window.clear(BG_COLOR);
-
-		_mouseState->draw(*this);
-
-		_window.draw(*button);
-
-		_window.display();
-	}
-
-	delete button;
 }
 
 ChessGame::TERMINATE_CODE ChessGame::outOfMove()

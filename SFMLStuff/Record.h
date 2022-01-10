@@ -64,19 +64,20 @@ public:
 	void addMove(Piece* _pieces[BOARD_SIZE][BOARD_SIZE], Piece* preChosen) {
 
 		std::vector <std::vector <int>> table(BOARD_SIZE);
-		for (int i = 0; i < BOARD_SIZE; i++)
+		for (int i = 0; i < BOARD_SIZE; i++) {
 			for (int j = 0; j < BOARD_SIZE; j++)
 				table[i].push_back(encodePiece(_pieces[i][j]));
+		}
 		_piecesHistory.push_back(table);
 
 		if (!preChosen)
 			_preChosenHistory.push_back(std::make_pair(-1, -1));
 		else
 			_preChosenHistory.push_back(std::make_pair(preChosen->row(), preChosen->col()));
-
 	}
 
 	void reset(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
+		std::cerr << "AAAAAAAAAAAAAAAAA" << '\n';
 		_piecesHistory.clear();
 		std::vector <std::vector <int>> table(BOARD_SIZE);
 		for (int i = 0; i < BOARD_SIZE; i++)
@@ -87,20 +88,22 @@ public:
 	}
 
 	Piece* preChosen(Piece* _pieces[BOARD_SIZE][BOARD_SIZE]) {
-		std::pair <int, int> preChosenPos = _preChosenHistory[_preChosenHistory.size() - 1];
+		std::pair <int, int> preChosenPos = _preChosenHistory.back();
 		if (preChosenPos.first == -1)
 			return NULL;
 		return _pieces[preChosenPos.first][preChosenPos.second];
 	}
 
-	bool undo() {
-		if (_piecesHistory.size() < 2) return false;
+	bool canUndo() {
+		return !_piecesHistory.empty();
+	}
+
+	void undo() {
 		_piecesHistory.pop_back();
 		_preChosenHistory.pop_back();
-		return true;
 	}
 
 	char pieceAt(int row, int col){
-		return _piecesHistory[_piecesHistory.size() - 1][row][col];
+		return _piecesHistory.back()[row][col];
 	}
 };

@@ -45,7 +45,6 @@ int main()
 		}
 
 		if (mode == MenuState::OPTION::LOAD) {
-			std::cout << "WTf" << '\n';
 			ChessGame game(window, 1);
 			game.run();
 		}

@@ -68,6 +68,11 @@ public:
 				_pieces[i][j] = NULL;
 			}
 
+		for (int i = 0; i < 3; i++) {
+			delete _button[i];
+			_button[i] = NULL;
+		}
+
 		delete _preChosen;
 		delete _mouseState;
 	}

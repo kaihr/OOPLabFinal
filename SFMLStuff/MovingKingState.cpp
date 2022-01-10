@@ -7,6 +7,7 @@ GameState* MovingKingState::handleInput(const sf::Event& event, ChessGame& owner
 
 		if ((cell.y == _col - 2 || cell.y == _col + 2)
 			&& owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces)) {
+			owner._record.addMove(owner._pieces, owner._preChosen);
 
 			owner._pieces[cell.x][cell.y] = owner._currentChosen;
 			owner._pieces[_row][_col] = NULL;

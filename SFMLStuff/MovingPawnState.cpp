@@ -16,7 +16,10 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				if (owner._pieces[_row][cell.y]
 					&& owner._pieces[_row][cell.y]->isWhite() != owner._currentChosen->isWhite()
 					&& owner._pieces[_row][cell.y]->type() == Piece::Type::PAWN
-					&& owner._preChosen == owner._pieces[_row][cell.y]) {
+					&& owner._preChosen == owner._pieces[_row][cell.y]
+					&& owner._preChosen->enPassant()) {
+
+					owner._record.addMove(owner._pieces, owner._preChosen);
 
 					delete owner._pieces[_row][cell.y];
 					owner._pieces[_row][cell.y] = NULL;
@@ -38,6 +41,8 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 				&& cell.x == _row + 2 * _positiveDirection
 				&& owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces)) {
 
+				owner._record.addMove(owner._pieces, owner._preChosen);
+
 				owner._pieces[_row][_col] = NULL;
 				owner._pieces[cell.x][cell.y] = owner._currentChosen;
 				owner._currentChosen->setPos(cell.x, cell.y);
@@ -49,6 +54,8 @@ GameState* MovingPawnState::handleInput(const sf::Event& event, ChessGame& owner
 
 			if ((cell.x == 0 || cell.x == 7)
 				&& (owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces))) {
+				owner._record.addMove(owner._pieces, owner._preChosen);
+				
 				if (owner._pieces[cell.x][cell.y])
 					delete owner._pieces[cell.x][cell.y];
 

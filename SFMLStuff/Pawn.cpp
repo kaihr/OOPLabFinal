@@ -38,12 +38,3 @@ bool Pawn::validCell(int nextRow, int nextCol, Piece* pieces[BOARD_SIZE][BOARD_S
 	
 	return false;
 }
-
-/*
-Piece* Pawn::handleInput(const sf::Event& event, Piece* pieces[BOARD_SIZE][BOARD_SIZE])
-{
-	// TO-DO: En Passant
-
-	return Piece::handleInput(event, pieces);
-}
-*/

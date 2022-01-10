@@ -19,6 +19,8 @@ GameState* MovingState::handleInput(const sf::Event& event, ChessGame& owner) {
 		}
 
 		if (owner._currentChosen->validAndNotInCheck(cell.x, cell.y, owner._pieces)) {
+			owner._record.addMove(owner._pieces, owner._preChosen);
+			
 			if (owner._pieces[cell.x][cell.y])
 				delete owner._pieces[cell.x][cell.y];
 
@@ -64,7 +66,7 @@ Swith turn
 Start clock
 Mark current piece as moved
 Update en passant state of previous piece
-Update privious piece
+Update previous piece
  */
 void MovingState::acceptMove(ChessGame& owner)
 {
@@ -79,7 +81,6 @@ void MovingState::acceptMove(ChessGame& owner)
 		owner._preChosen->switchEnPassant();
 
 	owner._preChosen = owner._currentChosen;
-	owner._record.addMove(owner._pieces, owner._preChosen);
 }
 
 /*
