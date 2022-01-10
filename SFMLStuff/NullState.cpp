@@ -3,7 +3,6 @@
 #include "MovingKingState.h"
 #include "MovingPawnState.h"
 #include "MenuState.h"
-#include "PauseState.h"
 
 GameState* NullState::handleInput(const sf::Event& event, ChessGame& owner)
 {
