@@ -98,7 +98,7 @@ public:
 	Timer() {
 		_tick = high_resolution_clock::now();
 		_text.setCharacterSize(FONT_SIZE);
-		_font.loadFromFile("Assets\\arial.ttf");
+		_font.loadFromFile("Assets/arial.ttf");
 		_text.setFont(_font);
 		_text.setStyle(sf::Text::Bold);
 		_text.setString("0");
