@@ -1,6 +1,8 @@
 # OOP Lab Final Assignment
 
 ### Linux
+Make sure you have installed [SFML](https://www.sfml-dev.org/tutorials/2.5/start-linux.php) correctly.
+Build the game from source using the following commands:
 ```
 cd Source
 make
