@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <fstream>
 #include <assert.h>
 
 #include "Timer.h"
@@ -54,7 +55,7 @@ public:
 	friend class PauseState;
 
 	ChessGame(sf::RenderWindow &window, Timer::FullTime configTime);
-	ChessGame(sf::RenderWindow& window, int saveSlot);
+	ChessGame(sf::RenderWindow& window, std::ifstream &fin);
 
 	~ChessGame();
 
@@ -67,5 +68,5 @@ public:
 
 	TERMINATE_CODE outOfMove();
 
-	void save(int id);
+	void save();
 };

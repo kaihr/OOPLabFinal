@@ -7,7 +7,6 @@
 
 #include <iostream>
 #include <string>
-#include <fstream>
 
 ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _currentChosen(NULL), _preChosen(NULL), _window(window)
 {
@@ -64,7 +63,7 @@ ChessGame::ChessGame(sf::RenderWindow &window, Timer::FullTime configTime) : _cu
 	_mouseState = new NullState();
 }
 
-ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
+ChessGame::ChessGame(sf::RenderWindow& window, std::ifstream &fin) : _window(window)
 {
 	_gameRunning = false;
 	_isWhiteTurn = false;
@@ -81,11 +80,6 @@ ChessGame::ChessGame(sf::RenderWindow& window, int saveSlot) : _window(window)
 	for (int i = 0; i < BOARD_SIZE; ++i)
 		for (int j = 0; j < BOARD_SIZE; ++j)
 			_pieces[i][j] = NULL;
-
-	std::ifstream fin(std::to_string(saveSlot) + ".dat");
-
-	if (!fin.good())
-		return;
 
 	std::string buf;
 
@@ -256,7 +250,7 @@ void ChessGame::handleButton(int btnId)
 	}
 
 	if (btnId == 1)
-		save(1);
+		save();
 
 	if (btnId == 2)
 		_gameRunning = false;
@@ -325,9 +319,9 @@ ChessGame::TERMINATE_CODE ChessGame::outOfMove()
 	return TERMINATE_CODE::STALE_MATE;
 }
 
-void ChessGame::save(int id)
+void ChessGame::save()
 {
-	std::ofstream fout(std::to_string(id) + ".dat");
+	std::ofstream fout("data.dat");
 
 	if (!fout.good())
 		return;

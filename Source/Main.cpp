@@ -45,8 +45,15 @@ int main()
 		}
 
 		if (mode == MenuState::OPTION::LOAD) {
-			ChessGame game(window, 1);
-			game.run();
+			std::ifstream fin("data.dat");
+
+			if(fin.good()) {
+				ChessGame game(window, fin);
+				game.run();
+			} else {
+				ChessGame game(window, CONFIG_TIME[configID]);
+				game.run();
+			}
 		}
 
 		if (mode == MenuState::OPTION::EXIT) {
