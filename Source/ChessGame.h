@@ -17,7 +17,6 @@
 #include "Queen.h"
 
 class GameState;
-
 class ChessGame {
 private:
 	const static int N_BUTTONS = 4;
@@ -49,7 +48,6 @@ public:
 	friend class MovingState;
 	friend class MovingKingState;
 	friend class MovingPawnState;
-	friend class MenuState;
 	friend class MenuOption;
 	friend class TerminateState;
 	friend class PromotionState;
@@ -58,27 +56,7 @@ public:
 	ChessGame(sf::RenderWindow &window, Timer::FullTime configTime);
 	ChessGame(sf::RenderWindow& window, int saveSlot);
 
-	~ChessGame()
-	{
-		assert(_currentChosen == NULL);
-
-		for (int i = 0; i < 8; i++)
-			for (int j = 0; j < 8; j++) {
-				if (_pieces[i][j] == _preChosen)
-					_preChosen = NULL;
-
-				delete _pieces[i][j];
-				_pieces[i][j] = NULL;
-			}
-
-		for (int i = 0; i < 3; i++) {
-			delete _button[i];
-			_button[i] = NULL;
-		}
-
-		delete _preChosen;
-		delete _mouseState;
-	}
+	~ChessGame();
 
 	void handleInput();
 	void update();

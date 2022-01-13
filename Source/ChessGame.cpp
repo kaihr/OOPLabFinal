@@ -285,8 +285,6 @@ void ChessGame::run()
 
 ChessGame::TERMINATE_CODE ChessGame::outOfMove()
 {
-	bool noValidMove = true;
-
 	int kingRow = -1;
 	int kingCol = -1;
 
@@ -365,4 +363,26 @@ void ChessGame::save(int id)
 	fout << _gameRunning << '\n';
 
 	fout.close();
+}
+
+ChessGame::~ChessGame()
+{
+	assert(_currentChosen == NULL);
+
+	for (int i = 0; i < 8; i++)
+		for (int j = 0; j < 8; j++) {
+			if (_pieces[i][j] == _preChosen)
+				_preChosen = NULL;
+
+			delete _pieces[i][j];
+			_pieces[i][j] = NULL;
+		}
+
+	for (int i = 0; i < 3; i++) {
+		delete _button[i];
+		_button[i] = NULL;
+	}
+
+	delete _preChosen;
+	delete _mouseState;
 }
