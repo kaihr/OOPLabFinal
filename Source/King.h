@@ -6,8 +6,6 @@
 #include "TextureManager.h"
 
 class King : public Piece {
-private:
-	sf::Texture _texture;
 public:
 	King(int row = 0, int col = 0, bool isWhite = true, bool enPassant = false, int hasMoved = 0) : 
 		Piece(row, col, isWhite, Piece::Type::KING, enPassant, hasMoved)
