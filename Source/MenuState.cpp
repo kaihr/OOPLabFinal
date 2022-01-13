@@ -50,8 +50,6 @@ void MenuState::draw()
 MenuState::OPTION MenuState::handleInput(const sf::Event& event)
 {
 	if (event.type == sf::Event::MouseButtonPressed){
-		sf::Vector2i mousePos = sf::Mouse::getPosition(_window);
-
 		if (_onConfig) {
 			for (int i = 0; i < N_CONFIG_BUTTON; i++)
 				if (_configButton[i]->isMouseOver()) {
